@@ -19,11 +19,6 @@
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
-                    colors: {
-                        brandDark: '#090d16',
-                        brandCard: '#111827',
-                        brandGold: '#d97706',
-                    }
                 }
             }
         }
@@ -38,14 +33,11 @@
             height: 5px;
         }
         ::-webkit-scrollbar-track {
-            background: #090d16;
+            background: #022c22;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #059669;
             border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #10b981;
         }
     </style>
 </head>
@@ -53,44 +45,44 @@
 
     <!-- LOADING OVERLAY -->
     <div id="loadingOverlay" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center hidden">
-        <div class="bg-slate-900 border border-slate-800 px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-4">
-            <div class="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-            <span class="text-xs font-semibold tracking-wide text-slate-200">Sinkronisasi Keamanan...</span>
+        <div class="bg-slate-900 border border-emerald-500/40 px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-4">
+            <div class="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+            <span class="text-xs font-semibold tracking-wide text-emerald-300">Sinkronisasi Google Sheets...</span>
         </div>
     </div>
 
     <div class="flex h-screen overflow-hidden relative">
         
         <!-- SIDEBAR -->
-        <aside id="sidebar" class="bg-slate-900 border-r border-slate-800 text-white w-72 space-y-6 py-6 px-4 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 shadow-2xl flex flex-col justify-between">
+        <aside id="sidebar" class="bg-[#022c22] border-r border-white/20 text-white w-72 space-y-6 py-6 px-4 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 shadow-2xl flex flex-col justify-between">
             <div>
-                <!-- Brand / Logo dengan palsel kop.png -->
-                <div class="flex items-center justify-between px-2 mb-8 pb-4 border-b border-slate-800/80">
+                <!-- Brand / Logo -->
+                <div class="flex items-center justify-between px-2 mb-8 pb-4 border-b border-white/10">
                     <div class="flex items-center space-x-3">
-                        <div class="w-11 h-11 bg-white/5 rounded-2xl flex items-center justify-center border border-slate-700 overflow-hidden flex-shrink-0 p-1">
+                        <div class="w-11 h-11 bg-white/10 rounded-2xl flex items-center justify-center border border-white/30 overflow-hidden flex-shrink-0 p-1 shadow-md">
                             <img src="palsel kop.png" alt="Logo MWC Palu Selatan" class="w-full h-full object-contain">
                         </div>
                         <div>
                             <h1 class="text-xs font-extrabold tracking-wider text-white uppercase">MWC Palu Selatan</h1>
-                            <p class="text-[10px] text-emerald-400 font-semibold tracking-widest uppercase">Secure Ledger</p>
+                            <p class="text-[10px] text-emerald-300 font-semibold tracking-widest uppercase">Secure Ledger</p>
                         </div>
                     </div>
-                    <button onclick="toggleMobileSidebar(false)" class="md:hidden text-slate-400 hover:text-white p-2">
+                    <button onclick="toggleMobileSidebar(false)" class="md:hidden text-emerald-200 hover:text-white p-2">
                         <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
 
-                <!-- Navigation Menu (Tanpa Menu Pengaturan PIN) -->
+                <!-- Navigation Menu -->
                 <nav class="space-y-1.5">
-                    <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold transition shadow-lg shadow-emerald-900/30">
-                        <i class="fa-solid fa-chart-pie w-5 text-emerald-200"></i>
+                    <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold transition shadow-lg shadow-emerald-900/50 border border-white/20">
+                        <i class="fa-solid fa-chart-pie w-5 text-white"></i>
                         <span class="text-sm">Dashboard Utama</span>
                     </a>
-                    <a href="#" onclick="switchTab('log')" id="nav-log" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium">
+                    <a href="#" onclick="switchTab('log')" id="nav-log" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-emerald-100 hover:bg-emerald-800/50 hover:text-white transition font-medium border border-transparent hover:border-white/10">
                         <i class="fa-solid fa-book-bookmark w-5"></i>
                         <span class="text-sm">Log Transaksi</span>
                     </a>
-                    <a href="#" onclick="switchTab('analisa')" id="nav-analisa" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium">
+                    <a href="#" onclick="switchTab('analisa')" id="nav-analisa" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-emerald-100 hover:bg-emerald-800/50 hover:text-white transition font-medium border border-transparent hover:border-white/10">
                         <i class="fa-solid fa-chart-line w-5"></i>
                         <span class="text-sm">Analisa Ekonomi</span>
                     </a>
@@ -98,12 +90,12 @@
             </div>
 
             <!-- Sidebar Footer -->
-            <div class="px-3 py-3 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs text-slate-400 space-y-1">
-                <div class="flex items-center space-x-2 text-emerald-400 font-semibold text-[11px]">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Encrypted Mode Active</span>
+            <div class="px-3 py-3 bg-emerald-950/60 rounded-2xl border border-white/15 text-xs text-emerald-200 space-y-1">
+                <div class="flex items-center space-x-2 text-white font-semibold text-[11px]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Emerald Security Active</span>
                 </div>
-                <p class="text-[10px] text-slate-500">&copy; 2026 MWC Palu Selatan</p>
+                <p class="text-[10px] text-emerald-300/70">&copy; 2026 MWC Palu Selatan</p>
             </div>
         </aside>
 
@@ -111,37 +103,37 @@
         <div class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-950">
             
             <!-- TOP NAVBAR -->
-            <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 z-30 flex items-center justify-between px-4 sm:px-8 py-3.5 flex-shrink-0">
+            <header class="bg-[#022c22]/90 backdrop-blur-md border-b border-white/15 z-30 flex items-center justify-between px-4 sm:px-8 py-3.5 flex-shrink-0">
                 <div class="flex items-center space-x-3">
-                    <button id="sidebarToggle" onclick="toggleMobileSidebar(true)" class="text-slate-400 hover:text-white focus:outline-none p-2 rounded-lg hover:bg-slate-800 transition">
+                    <button id="sidebarToggle" onclick="toggleMobileSidebar(true)" class="text-emerald-200 hover:text-white focus:outline-none p-2 rounded-lg hover:bg-emerald-900/40 transition border border-white/10">
                         <i class="fa-solid fa-bars text-lg"></i>
                     </button>
                     <div>
                         <h2 id="pageTitle" class="text-base sm:text-lg font-bold text-white tracking-wide truncate max-w-[150px] sm:max-w-none">Dashboard Keuangan</h2>
-                        <p class="text-[10px] sm:text-xs text-slate-400 hidden sm:block">Sistem Keamanan Terintegrasi Google Sheets</p>
+                        <p class="text-[10px] sm:text-xs text-emerald-300 hidden sm:block">Sistem Keamanan Terintegrasi Google Sheets</p>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <div class="flex items-center space-x-1 sm:space-x-2 bg-slate-950 border border-slate-800 px-2 sm:px-3 py-1.5 rounded-xl shadow-inner">
-                        <select id="filterBulan" onchange="filterData()" class="bg-transparent text-xs sm:text-sm text-slate-200 focus:outline-none cursor-pointer">
-                            <option value="all" class="bg-slate-900">Semua Bulan</option>
-                            <option value="01" class="bg-slate-900">Januari</option>
-                            <option value="02" class="bg-slate-900">Februari</option>
-                            <option value="03" class="bg-slate-900">Maret</option>
-                            <option value="04" class="bg-slate-900">April</option>
-                            <option value="05" class="bg-slate-900">Mei</option>
-                            <option value="06" class="bg-slate-900">Juni</option>
-                            <option value="07" class="bg-slate-900">Juli</option>
-                            <option value="08" class="bg-slate-900">Agustus</option>
-                            <option value="09" selected class="bg-slate-900">September</option>
-                            <option value="10" class="bg-slate-900">Oktober</option>
-                            <option value="11" class="bg-slate-900">November</option>
-                            <option value="12" class="bg-slate-900">Desember</option>
+                    <div class="flex items-center space-x-1 sm:space-x-2 bg-emerald-950 border border-white/20 px-2 sm:px-3 py-1.5 rounded-xl shadow-inner">
+                        <select id="filterBulan" onchange="filterData()" class="bg-transparent text-xs sm:text-sm text-emerald-100 focus:outline-none cursor-pointer">
+                            <option value="all" class="bg-emerald-950">Semua Bulan</option>
+                            <option value="01" class="bg-emerald-950">Januari</option>
+                            <option value="02" class="bg-emerald-950">Februari</option>
+                            <option value="03" class="bg-emerald-950">Maret</option>
+                            <option value="04" class="bg-emerald-950">April</option>
+                            <option value="05" class="bg-emerald-950">Mei</option>
+                            <option value="06" class="bg-emerald-950">Juni</option>
+                            <option value="07" class="bg-emerald-950">Juli</option>
+                            <option value="08" class="bg-emerald-950">Agustus</option>
+                            <option value="09" selected class="bg-emerald-950">September</option>
+                            <option value="10" class="bg-emerald-950">Oktober</option>
+                            <option value="11" class="bg-emerald-950">November</option>
+                            <option value="12" class="bg-emerald-950">Desember</option>
                         </select>
                     </div>
 
-                    <button onclick="toggleModal(true)" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/30 transition flex items-center space-x-1.5">
+                    <button onclick="toggleModal(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/50 transition flex items-center space-x-1.5 border border-white/30">
                         <i class="fa-solid fa-plus text-[10px]"></i>
                         <span class="hidden sm:inline">Entri Kas Aman</span>
                         <span class="sm:hidden">Entri</span>
@@ -155,40 +147,40 @@
                 <!-- TAB 1: DASHBOARD -->
                 <div id="tab-dashboard" class="space-y-6 sm:space-y-8">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                        <div class="bg-slate-900/90 border border-slate-800/80 p-5 sm:p-6 rounded-3xl shadow-xl">
+                        <div class="bg-[#022c22]/70 border border-white/20 p-5 sm:p-6 rounded-3xl shadow-xl">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Total Saldo Kas</p>
+                                    <p class="text-[11px] font-semibold tracking-wider text-emerald-300 uppercase">Total Saldo Kas</p>
                                     <h3 id="cardTotalKas" class="text-2xl sm:text-3xl font-extrabold text-white mt-1.5">Rp 0</h3>
-                                    <span class="inline-block mt-2.5 text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">Likuiditas Aman</span>
+                                    <span class="inline-block mt-2.5 text-[10px] text-white font-bold bg-emerald-600 border border-white/30 px-2 py-0.5 rounded-md">Likuiditas Aman</span>
                                 </div>
-                                <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-3.5 rounded-2xl text-lg">
+                                <div class="bg-emerald-600/20 border border-white/20 text-emerald-300 p-3.5 rounded-2xl text-lg shadow-inner">
                                     <i class="fa-solid fa-vault"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-slate-900/90 border border-slate-800/80 p-5 sm:p-6 rounded-3xl shadow-xl">
+                        <div class="bg-[#022c22]/70 border border-white/20 p-5 sm:p-6 rounded-3xl shadow-xl">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Total Pemasukan</p>
-                                    <h3 id="cardTotalMasuk" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1.5">Rp 0</h3>
-                                    <span class="inline-block mt-2.5 text-[10px] text-slate-400">Periode Terpilih</span>
+                                    <p class="text-[11px] font-semibold tracking-wider text-emerald-300 uppercase">Total Pemasukan</p>
+                                    <h3 id="cardTotalMasuk" class="text-2xl sm:text-3xl font-extrabold text-emerald-300 mt-1.5">Rp 0</h3>
+                                    <span class="inline-block mt-2.5 text-[10px] text-emerald-200/70">Periode Terpilih</span>
                                 </div>
-                                <div class="bg-sky-500/10 border border-sky-500/20 text-sky-400 p-3.5 rounded-2xl text-lg">
+                                <div class="bg-emerald-600/20 border border-white/20 text-emerald-300 p-3.5 rounded-2xl text-lg shadow-inner">
                                     <i class="fa-solid fa-arrow-trend-up"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-slate-900/90 border border-slate-800/80 p-5 sm:p-6 rounded-3xl shadow-xl">
+                        <div class="bg-[#022c22]/70 border border-white/20 p-5 sm:p-6 rounded-3xl shadow-xl">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Total Pengeluaran</p>
-                                    <h3 id="cardTotalKeluar" class="text-2xl sm:text-3xl font-extrabold text-rose-400 mt-1.5">Rp 0</h3>
-                                    <span class="inline-block mt-2.5 text-[10px] text-slate-400">Periode Terpilih</span>
+                                    <p class="text-[11px] font-semibold tracking-wider text-emerald-300 uppercase">Total Pengeluaran</p>
+                                    <h3 id="cardTotalKeluar" class="text-2xl sm:text-3xl font-extrabold text-rose-300 mt-1.5">Rp 0</h3>
+                                    <span class="inline-block mt-2.5 text-[10px] text-emerald-200/70">Periode Terpilih</span>
                                 </div>
-                                <div class="bg-rose-500/10 border border-rose-500/20 text-rose-400 p-3.5 rounded-2xl text-lg">
+                                <div class="bg-rose-950/40 border border-white/20 text-rose-300 p-3.5 rounded-2xl text-lg shadow-inner">
                                     <i class="fa-solid fa-arrow-trend-down"></i>
                                 </div>
                             </div>
@@ -196,7 +188,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                        <div class="bg-slate-900/90 border border-slate-800/80 p-5 sm:p-6 rounded-3xl shadow-xl">
+                        <div class="bg-[#022c22]/70 border border-white/20 p-5 sm:p-6 rounded-3xl shadow-xl">
                             <h3 class="font-bold text-white text-sm sm:text-base mb-4 flex items-center space-x-2">
                                 <i class="fa-solid fa-chart-line text-emerald-400"></i>
                                 <span>Kurva Arus Kas Bulanan</span>
@@ -206,9 +198,9 @@
                             </div>
                         </div>
 
-                        <div class="bg-slate-900/90 border border-slate-800/80 p-5 sm:p-6 rounded-3xl shadow-xl">
+                        <div class="bg-[#022c22]/70 border border-white/20 p-5 sm:p-6 rounded-3xl shadow-xl">
                             <h3 class="font-bold text-white text-sm sm:text-base mb-4 flex items-center space-x-2">
-                                <i class="fa-solid fa-chart-pie text-sky-400"></i>
+                                <i class="fa-solid fa-chart-pie text-emerald-300"></i>
                                 <span>Komposisi Sumber Pemasukan</span>
                             </h3>
                             <div class="relative h-64 sm:h-72 flex justify-center">
@@ -220,20 +212,20 @@
 
                 <!-- TAB 2: LOG TRANSAKSI -->
                 <div id="tab-log" class="hidden space-y-6">
-                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl shadow-xl overflow-hidden">
-                        <div class="p-5 sm:p-6 border-b border-slate-800 flex justify-between items-center">
+                    <div class="bg-[#022c22]/70 border border-white/20 rounded-3xl shadow-xl overflow-hidden">
+                        <div class="p-5 sm:p-6 border-b border-white/15 flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-white text-sm sm:text-base">Log Transaksi Kas Terenkripsi</h3>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Google Sheets Cloud Database</p>
+                                <p class="text-[11px] text-emerald-300 mt-0.5">Google Sheets Cloud Database</p>
                             </div>
-                            <button onclick="loadTransactions()" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 px-3 py-2 rounded-xl border border-slate-800 transition">
-                                <i class="fa-solid fa-rotate-right text-emerald-400"></i>
+                            <button onclick="loadTransactions()" class="text-xs bg-emerald-950 hover:bg-emerald-900 text-emerald-200 px-3 py-2 rounded-xl border border-white/20 transition">
+                                <i class="fa-solid fa-rotate-right text-emerald-300"></i>
                             </button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse whitespace-nowrap sm:whitespace-normal">
                                 <thead>
-                                    <tr class="bg-slate-950/60 text-slate-400 uppercase text-[10px] sm:text-[11px] tracking-wider border-b border-slate-800">
+                                    <tr class="bg-emerald-950/80 text-emerald-300 uppercase text-[10px] sm:text-[11px] tracking-wider border-b border-white/15">
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Tanggal</th>
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Keterangan</th>
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Kategori</th>
@@ -242,7 +234,7 @@
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold text-center">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="logTableBody" class="divide-y divide-slate-800/60 text-xs sm:text-sm"></tbody>
+                                <tbody id="logTableBody" class="divide-y divide-white/10 text-xs sm:text-sm"></tbody>
                             </table>
                         </div>
                     </div>
@@ -250,19 +242,19 @@
 
                 <!-- TAB 3: ANALISA EKONOMI -->
                 <div id="tab-analisa" class="hidden space-y-6">
-                    <div class="bg-slate-900/90 border border-slate-800/80 p-6 sm:p-8 rounded-3xl shadow-xl space-y-6">
+                    <div class="bg-[#022c22]/70 border border-white/20 p-6 sm:p-8 rounded-3xl shadow-xl space-y-6">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl flex-shrink-0">
+                            <div class="w-12 h-12 bg-emerald-600/20 border border-white/30 text-emerald-300 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
                                 <i class="fa-solid fa-brain"></i>
                             </div>
                             <div>
                                 <h3 class="font-bold text-white text-base sm:text-lg">Analisis Ekonomi & Kesehatan Finansial</h3>
-                                <p class="text-xs text-slate-400">Tinjauan makro-organisasi MWC Palu Selatan</p>
+                                <p class="text-xs text-emerald-300">Tinjauan makro-organisasi MWC Palu Selatan</p>
                             </div>
                         </div>
-                        <div class="p-5 bg-slate-950/80 rounded-2xl border border-emerald-500/20 space-y-2">
-                            <h4 class="font-bold text-emerald-400 text-sm">Rasio Surplus Operasional</h4>
-                            <p id="analisaSurplus" class="text-xs text-slate-300 leading-relaxed">Menghitung rasio surplus dana kas terhadap pengeluaran rutin organisasi.</p>
+                        <div class="p-5 bg-emerald-950/80 rounded-2xl border border-white/20 space-y-2 shadow-inner">
+                            <h4 class="font-bold text-emerald-300 text-sm">Rasio Surplus Operasional</h4>
+                            <p id="analisaSurplus" class="text-xs text-emerald-100 leading-relaxed">Menghitung rasio surplus dana kas terhadap pengeluaran rutin organisasi.</p>
                         </div>
                     </div>
                 </div>
@@ -271,47 +263,59 @@
         </div>
     </div>
 
-    <!-- MODAL INPUT TRANSAKSI -->
+    <!-- MODAL INPUT TRANSAKSI DENGAN PIN & TOGGLE AMAN -->
     <div id="transactionModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto">
-            <div class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+        <div class="bg-[#022c22] border border-white/30 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto text-white">
+            <div class="bg-emerald-950 border-b border-white/20 px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
-                    <h3 class="font-bold text-white text-base">Form Entri Kas Aman</h3>
+                    <i class="fa-solid fa-shield-halved text-emerald-300 text-sm"></i>
+                    <h3 class="font-bold text-white text-base">Form Entri Kas Ber-PIN</h3>
                 </div>
-                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="toggleModal(false)" class="text-emerald-200 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="transactionForm" onsubmit="addTransaction(event)" class="p-6 space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Jenis Transaksi</label>
-                    <select id="jenis" onchange="handleJenisChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Jenis Transaksi</label>
+                    <select id="jenis" onchange="handleJenisChange()" class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                         <option value="Pemasukan">Pemasukan</option>
                         <option value="Pengeluaran">Pengeluaran</option>
                     </select>
                 </div>
                 <div id="kategoriContainer">
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Kategori Pemasukan</label>
-                    <select id="kategori" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Kategori Pemasukan</label>
+                    <select id="kategori" class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                         <option value="Infaq">Infaq</option>
                         <option value="Pundi">Pundi</option>
                         <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Keterangan / Sumber</label>
-                    <input type="text" id="keterangan" required placeholder="Contoh: Infaq Anggota" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Keterangan / Sumber</label>
+                    <input type="text" id="keterangan" required placeholder="Contoh: Infaq Anggota" class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Nominal (Rp)</label>
-                    <input type="number" id="nominal" required min="1000" placeholder="Contoh: 150000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Nominal (Rp)</label>
+                    <input type="number" id="nominal" required min="1000" placeholder="Contoh: 150000" class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Tanggal</label>
-                    <input type="date" id="tanggal" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Tanggal</label>
+                    <input type="date" id="tanggal" required class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                 </div>
-                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-800">
-                    <button type="button" onclick="toggleModal(false)" class="px-5 py-2.5 bg-slate-800 text-slate-300 rounded-xl text-sm font-semibold">Batal</button>
-                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold shadow-lg">Kirim ke Sheets</button>
+                
+                <!-- INPUT PIN DENGAN TOGGLE (MATA) & KEAMANAN TERSEMBUNYI -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">PIN Keamanan Kirim</label>
+                    <div class="relative">
+                        <input type="password" id="inputPin" required placeholder="Masukkan PIN MmcPalsel" class="w-full bg-emerald-950 border border-white/20 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-white tracking-widest" autocomplete="new-password">
+                        <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-emerald-300 hover:text-white transition focus:outline-none" title="Tampilkan/Sembunyikan PIN">
+                            <i id="pinEyeIcon" class="fa-solid fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-white/20">
+                    <button type="button" onclick="toggleModal(false)" class="px-5 py-2.5 bg-emerald-950 text-emerald-200 border border-white/20 rounded-xl text-sm font-semibold hover:bg-emerald-900">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-white/30 rounded-xl text-sm font-semibold shadow-lg">Kirim ke Sheets</button>
                 </div>
             </form>
         </div>
@@ -319,10 +323,9 @@
 
     <!-- JAVASCRIPT SYSTEM -->
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxaYUA4JbQuXLn2ZXwgdHypTJVc_IlukTd8kmq5SV1G9XPP__11au4ZGMja96IDz-rq/exec";
-        
-        // PIN Keamanan disembunyikan secara internal di balik sistem (tidak ditampilkan di UI/menu)
-        const SYSTEM_SECURE_PIN = "MWC 2011";
+        // URL Web App Google Apps Script terbaru
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxG91LyPC_paXCGPopGVoZdGyYKdoBonVY6o5RauSJSh7b_ieH89sdp-pw-3d1ccNj9/exec";
+        const REQUIRED_PIN = "MmcPalsel";
 
         let transactions = [];
         let cashCurveChartInstance = null;
@@ -339,13 +342,27 @@
             }
         }
 
-        // Fungsi Keamanan Tersembunyi (Otomatis memverifikasi enkripsi sistem tanpa form yang mencolok)
+        // Fungsi Toggle Lihat/Sembunyikan PIN demi Keamanan
+        function togglePinVisibility() {
+            const pinInput = document.getElementById('inputPin');
+            const eyeIcon = document.getElementById('pinEyeIcon');
+            if (pinInput.type === "password") {
+                pinInput.type = "text";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            } else {
+                pinInput.type = "password";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
+            }
+        }
+
         function confirmAndDelete(id) {
-            const secretInput = prompt("Masukkan PIN Keamanan Internal untuk Menghapus Data:");
-            if (secretInput === SYSTEM_SECURE_PIN) {
+            const secretInput = prompt("Masukkan PIN Keamanan untuk Menghapus Data:");
+            if (secretInput === REQUIRED_PIN) {
                 executeDelete(id);
             } else if (secretInput !== null) {
-                alert("PIN Internal Salah! Akses ditolak.");
+                alert("PIN Salah! Akses hapus ditolak.");
             }
         }
 
@@ -354,12 +371,12 @@
             document.getElementById('tab-log').classList.add('hidden');
             document.getElementById('tab-analisa').classList.add('hidden');
 
-            document.getElementById('nav-dashboard').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium";
-            document.getElementById('nav-log').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium";
-            document.getElementById('nav-analisa').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium";
+            document.getElementById('nav-dashboard').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-emerald-100 hover:bg-emerald-800/50 hover:text-white transition font-medium border border-transparent hover:border-white/10";
+            document.getElementById('nav-log').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-emerald-100 hover:bg-emerald-800/50 hover:text-white transition font-medium border border-transparent hover:border-white/10";
+            document.getElementById('nav-analisa').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-emerald-100 hover:bg-emerald-800/50 hover:text-white transition font-medium border border-transparent hover:border-white/10";
 
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabId}`).className = "flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold transition shadow-lg shadow-emerald-900/30";
+            document.getElementById(`nav-${tabId}`).className = "flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold transition shadow-lg shadow-emerald-900/50 border border-white/20";
 
             const titles = { 'dashboard': 'Dashboard Keuangan', 'log': 'Log Transaksi Kas', 'analisa': 'Analisa Ekonomi Keuangan' };
             document.getElementById('pageTitle').innerText = titles[tabId];
@@ -373,7 +390,15 @@
 
         function toggleModal(show) {
             const modal = document.getElementById('transactionModal');
-            if(show) { modal.classList.remove('hidden'); } else { modal.classList.add('hidden'); }
+            if(show) { 
+                document.getElementById('inputPin').value = '';
+                // Pastikan setiap kali modal dibuka, status PIN tersembunyi (tipe password)
+                document.getElementById('inputPin').type = "password";
+                document.getElementById('pinEyeIcon').className = "fa-solid fa-eye text-sm";
+                modal.classList.remove('hidden'); 
+            } else { 
+                modal.classList.add('hidden'); 
+            }
         }
 
         function handleJenisChange() {
@@ -381,8 +406,8 @@
             const kategoriContainer = document.getElementById('kategoriContainer');
             if(jenis === 'Pengeluaran') {
                 kategoriContainer.innerHTML = `
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Kategori Pengeluaran</label>
-                    <select id="kategori" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Kategori Pengeluaran</label>
+                    <select id="kategori" class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                         <option value="Operasional">Operasional Kantor</option>
                         <option value="Konsumsi">Konsumsi & Rapat</option>
                         <option value="Sosial">Bantuan Sosial</option>
@@ -391,8 +416,8 @@
                 `;
             } else {
                 kategoriContainer.innerHTML = `
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Kategori Pemasukan</label>
-                    <select id="kategori" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-emerald-300 mb-1.5">Kategori Pemasukan</label>
+                    <select id="kategori" class="w-full bg-emerald-950 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white">
                         <option value="Infaq">Infaq</option>
                         <option value="Pundi">Pundi</option>
                         <option value="Lainnya">Lainnya</option>
@@ -428,6 +453,14 @@
 
         async function addTransaction(e) {
             e.preventDefault();
+            
+            // Validasi PIN MmcPalsel
+            const enteredPin = document.getElementById('inputPin').value;
+            if (enteredPin !== REQUIRED_PIN) {
+                alert("PIN Pengiriman Salah! Gunakan PIN yang benar (MmcPalsel).");
+                return;
+            }
+
             const newTx = {
                 id: Date.now(),
                 tanggal: document.getElementById('tanggal').value,
@@ -446,10 +479,13 @@
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: "add", data: newTx })
                 });
-                alert('Data berhasil disimpan ke Google Sheets!');
+                alert('Data berhasil dikirim dan disinkronkan ke Google Sheets!');
                 document.getElementById('transactionForm').reset();
-                setTimeout(loadTransactions, 2000);
-            } catch (error) { showLoading(false); }
+                setTimeout(loadTransactions, 2500);
+            } catch (error) { 
+                showLoading(false);
+                alert('Terjadi kesalahan jaringan saat mengirim data.');
+            }
         }
 
         async function executeDelete(id) {
@@ -461,7 +497,7 @@
                     body: JSON.stringify({ action: "delete", id: id })
                 });
                 alert('Data berhasil dihapus dari database!');
-                setTimeout(loadTransactions, 2000);
+                setTimeout(loadTransactions, 2500);
             } catch (error) { showLoading(false); }
         }
 
@@ -491,19 +527,19 @@
             const tbody = document.getElementById('logTableBody');
             tbody.innerHTML = '';
             if(filteredTx.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-500">Belum ada data transaksi tercatat.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-emerald-300/60">Belum ada data transaksi tercatat.</td></tr>`;
             } else {
                 filteredTx.forEach(t => {
-                    const badgeColor = t.jenis === 'Pemasukan' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
+                    const badgeColor = t.jenis === 'Pemasukan' ? 'bg-emerald-600/30 text-emerald-300 border border-white/20' : 'bg-rose-950/50 text-rose-300 border border-white/20';
                     tbody.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition">
-                            <td class="py-3.5 px-4 sm:px-6 text-slate-300 text-xs">${t.tanggal}</td>
+                        <tr class="hover:bg-emerald-900/30 transition">
+                            <td class="py-3.5 px-4 sm:px-6 text-emerald-100 text-xs">${t.tanggal}</td>
                             <td class="py-3.5 px-4 sm:px-6 font-semibold text-white">${t.keterangan}</td>
-                            <td class="py-3.5 px-4 sm:px-6 text-slate-400"><span class="bg-slate-950 px-2 py-0.5 rounded-md border border-slate-800 text-[11px]">${t.kategori}</span></td>
+                            <td class="py-3.5 px-4 sm:px-6 text-emerald-200"><span class="bg-emerald-950 px-2 py-0.5 rounded-md border border-white/20 text-[11px]">${t.kategori}</span></td>
                             <td class="py-3.5 px-4 sm:px-6"><span class="${badgeColor} px-2.5 py-0.5 rounded-full text-[11px] font-bold">${t.jenis}</span></td>
-                            <td class="py-3.5 px-4 sm:px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-emerald-400' : 'text-rose-400'}">${formatRupiah(t.nominal)}</td>
+                            <td class="py-3.5 px-4 sm:px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-emerald-300' : 'text-rose-300'}">${formatRupiah(t.nominal)}</td>
                             <td class="py-3.5 px-4 sm:px-6 text-center">
-                                <button onclick="confirmAndDelete('${t.id}')" class="text-slate-500 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-800 transition" title="Hapus Data">
+                                <button onclick="confirmAndDelete('${t.id}')" class="text-emerald-300 hover:text-rose-300 p-2 rounded-lg hover:bg-emerald-900/50 transition" title="Hapus Data">
                                     <i class="fa-solid fa-trash text-xs"></i>
                                 </button>
                             </td>
@@ -542,11 +578,11 @@
                 data: {
                     labels: months,
                     datasets: [
-                        { label: 'Pemasukan', data: monthlyIn, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.05)', fill: true, tension: 0.35, borderWidth: 2 },
-                        { label: 'Pengeluaran', data: monthlyOut, borderColor: '#f43f5e', backgroundColor: 'rgba(244, 63, 94, 0.05)', fill: true, tension: 0.35, borderWidth: 2 }
+                        { label: 'Pemasukan', data: monthlyIn, borderColor: '#34d399', backgroundColor: 'rgba(52, 211, 153, 0.1)', fill: true, tension: 0.35, borderWidth: 2 },
+                        { label: 'Pengeluaran', data: monthlyOut, borderColor: '#fb7185', backgroundColor: 'rgba(251, 113, 133, 0.1)', fill: true, tension: 0.35, borderWidth: 2 }
                     ]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', boxWidth: 12 } } }, scales: { x: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', font: { size: 10 } } }, y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', font: { size: 10 } } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#a7f3d0', boxWidth: 12 } } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#6ee7b7', font: { size: 10 } } }, y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#6ee7b7', font: { size: 10 } } } } }
             });
 
             const ctxPie = document.getElementById('incomePieChart').getContext('2d');
@@ -555,9 +591,9 @@
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(incomeCategories),
-                    datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#10b981', '#0ea5e9', '#f59e0b'], borderWidth: 0 }]
+                    datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#34d399', '#38bdf8', '#fbbf24'], borderWidth: 1, borderColor: '#022c22' }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', boxWidth: 12 } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#a7f3d0', boxWidth: 12 } } } }
             });
         }
 
