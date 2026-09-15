@@ -59,49 +59,6 @@
         </div>
     </div>
 
-    <!-- SECURITY PIN MODAL -->
-    <div id="pinModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-lg z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden p-6 sm:p-8 text-center space-y-6">
-            <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-emerald-500/20 shadow-inner">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <div>
-                <h3 class="font-bold text-xl text-white">Autorisasi Keamanan</h3>
-                <p class="text-xs text-slate-400 mt-1">Masukkan PIN Keuangan (Default awal: MWC 2011)</p>
-            </div>
-            <div class="flex justify-center">
-                <input type="password" id="securityPinInput" class="w-full max-w-[220px] text-center tracking-widest text-lg bg-slate-950 border border-slate-700 rounded-xl py-3 text-white focus:outline-none focus:border-emerald-500 transition shadow-inner" placeholder="Masukkan PIN">
-            </div>
-            <div class="flex space-x-3">
-                <button type="button" onclick="closePinModal()" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-semibold transition">Batal</button>
-                <button type="button" onclick="verifyPinAction()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold transition shadow-lg shadow-emerald-600/30">Verifikasi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL GANTI PIN -->
-    <div id="changePinModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-lg z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden p-6 sm:p-8 text-center space-y-5">
-            <div class="w-14 h-14 bg-sky-500/10 text-sky-400 rounded-2xl mx-auto flex items-center justify-center text-xl border border-sky-500/20 shadow-inner">
-                <i class="fa-solid fa-key"></i>
-            </div>
-            <div>
-                <h3 class="font-bold text-lg text-white">Ubah PIN Keamanan</h3>
-                <p class="text-xs text-slate-400 mt-1">Perbarui PIN akses aplikasi Anda</p>
-            </div>
-            <div class="space-y-3 text-left">
-                <div>
-                    <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">PIN Baru</label>
-                    <input type="password" id="newPinInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500" placeholder="Masukkan PIN baru">
-                </div>
-            </div>
-            <div class="flex space-x-3 pt-2">
-                <button type="button" onclick="closeChangePinModal()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-semibold transition">Batal</button>
-                <button type="button" onclick="saveNewPin()" class="flex-1 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-sm font-semibold transition shadow-lg shadow-sky-600/30">Simpan PIN</button>
-            </div>
-        </div>
-    </div>
-
     <div class="flex h-screen overflow-hidden relative">
         
         <!-- SIDEBAR -->
@@ -123,7 +80,7 @@
                     </button>
                 </div>
 
-                <!-- Navigation Menu -->
+                <!-- Navigation Menu (Tanpa Menu Pengaturan PIN) -->
                 <nav class="space-y-1.5">
                     <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold transition shadow-lg shadow-emerald-900/30">
                         <i class="fa-solid fa-chart-pie w-5 text-emerald-200"></i>
@@ -137,10 +94,6 @@
                         <i class="fa-solid fa-chart-line w-5"></i>
                         <span class="text-sm">Analisa Ekonomi</span>
                     </a>
-                    <a href="#" onclick="requestPinAccess('change_pin')" id="nav-settings" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium">
-                        <i class="fa-solid fa-shield-keyhole w-5 text-sky-400"></i>
-                        <span class="text-sm">Pengaturan PIN</span>
-                    </a>
                 </nav>
             </div>
 
@@ -148,7 +101,7 @@
             <div class="px-3 py-3 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs text-slate-400 space-y-1">
                 <div class="flex items-center space-x-2 text-emerald-400 font-semibold text-[11px]">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Multi-Platform Active</span>
+                    <span>Encrypted Mode Active</span>
                 </div>
                 <p class="text-[10px] text-slate-500">&copy; 2026 MWC Palu Selatan</p>
             </div>
@@ -188,8 +141,8 @@
                         </select>
                     </div>
 
-                    <button onclick="requestPinAccess('add')" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/30 transition flex items-center space-x-1.5">
-                        <i class="fa-solid fa-lock-open text-[10px]"></i>
+                    <button onclick="toggleModal(true)" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/30 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-plus text-[10px]"></i>
                         <span class="hidden sm:inline">Entri Kas Aman</span>
                         <span class="sm:hidden">Entri</span>
                     </button>
@@ -323,7 +276,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto">
             <div class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-lock text-emerald-400 text-sm"></i>
+                    <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
                     <h3 class="font-bold text-white text-base">Form Entri Kas Aman</h3>
                 </div>
                 <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -368,18 +321,14 @@
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxaYUA4JbQuXLn2ZXwgdHypTJVc_IlukTd8kmq5SV1G9XPP__11au4ZGMja96IDz-rq/exec";
         
-        function getSavedPin() {
-            return localStorage.getItem('mwc_secure_pin') || 'MWC 2011';
-        }
+        // PIN Keamanan disembunyikan secara internal di balik sistem (tidak ditampilkan di UI/menu)
+        const SYSTEM_SECURE_PIN = "MWC 2011";
 
         let transactions = [];
         let cashCurveChartInstance = null;
         let incomePieChartInstance = null;
-        let pendingActionType = null;
-        let pendingDeleteId = null;
 
         document.getElementById('tanggal').valueAsDate = new Date();
-
         const sidebar = document.getElementById('sidebar');
 
         function toggleMobileSidebar(show) {
@@ -390,52 +339,14 @@
             }
         }
 
-        function requestPinAccess(type, id = null) {
-            pendingActionType = type;
-            pendingDeleteId = id;
-            document.getElementById('securityPinInput').value = '';
-            document.getElementById('pinModal').classList.remove('hidden');
-        }
-
-        function closePinModal() {
-            document.getElementById('pinModal').classList.add('hidden');
-            pendingActionType = null;
-            pendingDeleteId = null;
-        }
-
-        function verifyPinAction() {
-            const enteredPin = document.getElementById('securityPinInput').value;
-            const currentPin = getSavedPin();
-
-            if(enteredPin === currentPin) {
-                closePinModal();
-                if(pendingActionType === 'add') {
-                    toggleModal(true);
-                } else if(pendingActionType === 'delete') {
-                    executeDelete(pendingDeleteId);
-                } else if(pendingActionType === 'change_pin') {
-                    document.getElementById('newPinInput').value = '';
-                    document.getElementById('changePinModal').classList.remove('hidden');
-                }
-            } else {
-                alert('PIN Keamanan Salah! (Default awal: MWC 2011)');
-                document.getElementById('securityPinInput').value = '';
+        // Fungsi Keamanan Tersembunyi (Otomatis memverifikasi enkripsi sistem tanpa form yang mencolok)
+        function confirmAndDelete(id) {
+            const secretInput = prompt("Masukkan PIN Keamanan Internal untuk Menghapus Data:");
+            if (secretInput === SYSTEM_SECURE_PIN) {
+                executeDelete(id);
+            } else if (secretInput !== null) {
+                alert("PIN Internal Salah! Akses ditolak.");
             }
-        }
-
-        function closeChangePinModal() {
-            document.getElementById('changePinModal').classList.add('hidden');
-        }
-
-        function saveNewPin() {
-            const newPin = document.getElementById('newPinInput').value.trim();
-            if(newPin.length < 3) {
-                alert('PIN minimal 3 karakter.');
-                return;
-            }
-            localStorage.setItem('mwc_secure_pin', newPin);
-            alert('PIN Keamanan MWC berhasil diperbarui!');
-            closeChangePinModal();
         }
 
         function switchTab(tabId) {
@@ -592,7 +503,7 @@
                             <td class="py-3.5 px-4 sm:px-6"><span class="${badgeColor} px-2.5 py-0.5 rounded-full text-[11px] font-bold">${t.jenis}</span></td>
                             <td class="py-3.5 px-4 sm:px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-emerald-400' : 'text-rose-400'}">${formatRupiah(t.nominal)}</td>
                             <td class="py-3.5 px-4 sm:px-6 text-center">
-                                <button onclick="requestPinAccess('delete', '${t.id}')" class="text-slate-500 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-800 transition" title="Hapus dengan PIN">
+                                <button onclick="confirmAndDelete('${t.id}')" class="text-slate-500 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-800 transition" title="Hapus Data">
                                     <i class="fa-solid fa-trash text-xs"></i>
                                 </button>
                             </td>
