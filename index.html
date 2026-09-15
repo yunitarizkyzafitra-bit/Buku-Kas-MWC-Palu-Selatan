@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Kas - MWC Palu Selatan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#0ea5e9',
+                        darkSidebar: '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased">
+
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center hidden">
+        <div class="bg-white px-6 py-4 rounded-xl shadow-xl flex items-center space-x-3">
+            <i class="fa-solid fa-spinner fa-spin text-emerald-600 text-xl"></i>
+            <span class="text-sm font-medium text-slate-700">Menghubungkan ke Google Sheets...</span>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="bg-darkSidebar text-white w-64 space-y-6 py-7 px-4 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-30 shadow-xl flex flex-col justify-between">
+            <div>
+                <!-- Brand / Logo -->
+                <div class="flex items-center justify-between px-2 mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-emerald-600 p-2 rounded-lg text-white font-bold text-lg">MWC</div>
+                        <div>
+                            <h1 class="text-base font-bold tracking-wider">Palu Selatan</h1>
+                            <p class="text-xs text-slate-400">Database Google Sheets</p>
+                        </div>
+                    </div>
+                    <!-- Pin Sidebar Button -->
+                    <button id="pinBtn" class="text-slate-400 hover:text-white transition" title="Pin Sidebar">
+                        <i class="fa-solid fa-thumbtack text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="space-y-1">
+                    <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-medium transition shadow-sm">
+                        <i class="fa-solid fa-chart-pie w-5"></i>
+                        <span>Dashboard & Kurva</span>
+                    </a>
+                    <a href="#" onclick="switchTab('log')" id="nav-log" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-book-open w-5"></i>
+                        <span>Log Kas (Transaksi)</span>
+                    </a>
+                    <a href="#" onclick="switchTab('analisa')" id="nav-analisa" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-chart-line w-5"></i>
+                        <span>Analisa Ekonomi</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="px-2 pt-4 border-t border-slate-800 text-xs text-slate-500">
+                <p>&copy; 2026 MWC Palu Selatan</p>
+                <p class="mt-1">Connected to Google Sheets</p>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- TOP NAVBAR -->
+            <header class="bg-white shadow-sm z-20 flex items-center justify-between px-6 py-4">
+                <div class="flex items-center space-x-4">
+                    <!-- Toggle Sidebar Button -->
+                    <button id="sidebarToggle" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <h2 id="pageTitle" class="text-xl font-bold text-slate-800">Dashboard Keuangan</h2>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <!-- Month Filter Dropdown -->
+                    <div class="flex items-center space-x-2">
+                        <label for="filterBulan" class="text-sm font-medium text-slate-600">Bulan:</label>
+                        <select id="filterBulan" onchange="filterData()" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="all">Semua Bulan</option>
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09" selected>September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Data Toggle Button -->
+                    <button onclick="toggleModal(true)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Entri Kas Baru</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- MAIN SCROLLABLE CONTENT -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100 p-6">
+                
+                <!-- TAB 1: DASHBOARD & KURVA -->
+                <div id="tab-dashboard" class="space-y-6">
+                    
+                    <!-- KPI SUMMARY CARDS -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Total Kas -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-500">Total Saldo Kas</p>
+                                <h3 id="cardTotalKas" class="text-2xl font-bold text-slate-900 mt-1">Rp 0</h3>
+                                <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded">Likuiditas Aman</span>
+                            </div>
+                            <div class="bg-emerald-100 text-emerald-700 p-4 rounded-xl text-xl">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                        </div>
+
+                        <!-- Total Pemasukan -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-500">Total Pemasukan</p>
+                                <h3 id="cardTotalMasuk" class="text-2xl font-bold text-emerald-600 mt-1">Rp 0</h3>
+                                <span id="labelFilterMasuk" class="text-xs text-slate-400">Periode Terpilih</span>
+                            </div>
+                            <div class="bg-sky-100 text-sky-700 p-4 rounded-xl text-xl">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                        </div>
+
+                        <!-- Total Pengeluaran -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-500">Total Pengeluaran</p>
+                                <h3 id="cardTotalKeluar" class="text-2xl font-bold text-rose-600 mt-1">Rp 0</h3>
+                                <span id="labelFilterKeluar" class="text-xs text-slate-400">Periode Terpilih</span>
+                            </div>
+                            <div class="bg-rose-100 text-rose-700 p-4 rounded-xl text-xl">
+                                <i class="fa-solid fa-arrow-trend-down"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CHARTS SECTION -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Kurva Arus Kas Bulanan -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                                <i class="fa-solid fa-chart-line text-emerald-600"></i>
+                                <span>Kurva Pemasukan & Pengeluaran Bulanan</span>
+                            </h3>
+                            <div class="relative h-72">
+                                <canvas id="cashCurveChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Komposisi Pemasukan -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                                <i class="fa-solid fa-pie-chart text-sky-600"></i>
+                                <span>Komposisi Sumber Pemasukan</span>
+                            </h3>
+                            <div class="relative h-72 flex justify-center">
+                                <canvas id="incomePieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB 2: LOG KAS (TRANSAKSI) -->
+                <div id="tab-log" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-6 border-b border-slate-200 flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-slate-800">Log Transaksi Kas (Database Google Sheets)</h3>
+                            <button onclick="loadTransactions()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Muat Ulang Data
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider border-b border-slate-200">
+                                        <th class="py-3 px-6">Tanggal</th>
+                                        <th class="py-3 px-6">Keterangan / Sumber</th>
+                                        <th class="py-3 px-6">Kategori</th>
+                                        <th class="py-3 px-6">Jenis</th>
+                                        <th class="py-3 px-6 text-right">Nominal (Rp)</th>
+                                        <th class="py-3 px-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logTableBody" class="divide-y divide-slate-200 text-sm">
+                                    <!-- Dynamic rows inserted via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: ANALISA EKONOMI -->
+                <div id="tab-analisa" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center space-x-2">
+                            <i class="fa-solid fa-brain text-emerald-600"></i>
+                            <span>Analisis Ekonomi & Kesehatan Finansial MWC Palu Selatan</span>
+                        </h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Berdasarkan sinkronisasi data dari Database Google Sheets secara *real-time*, berikut adalah tinjauan ekonomi organisasi:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                                <h4 class="font-bold text-emerald-800 text-sm mb-1"><i class="fa-solid fa-circle-check mr-2"></i>Rasio Surplus Operasional</h4>
+                                <p id="analisaSurplus" class="text-xs text-emerald-700 leading-relaxed">Menghitung selisih positif antara pundi infaq dan pengeluaran rutin organisasi.</p>
+                            </div>
+                            <div class="p-4 bg-sky-50 rounded-xl border border-sky-100">
+                                <h4 class="font-bold text-sky-800 text-sm mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Rekomendasi Kebijakan Anggaran</h4>
+                                <p class="text-xs text-sky-700 leading-relaxed">Optimalisasi pengumpulan pundi jumat dan perluasan donatur tetap untuk memperkuat ketahanan kas jangka panjang.</p>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4 mt-4">
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Ringkasan Parameter Keuangan:</h4>
+                            <ul class="list-disc list-inside text-sm text-slate-600 space-y-1" id="analisaBulletList">
+                                <!-- Dynamic bullet points -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL INPUT TRANSAKSI -->
+    <div id="transactionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Form Entri Kas (Ke Sheets)</h3>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="transactionForm" onsubmit="addTransaction(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Jenis Transaksi</label>
+                    <select id="jenis" onchange="handleJenisChange()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="Pemasukan">Pemasukan</option>
+                        <option value="Pengeluaran">Pengeluaran</option>
+                    </select>
+                </div>
+
+                <div id="kategoriContainer">
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Kategori Pemasukan</label>
+                    <select id="kategori" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="Infaq">Infaq</option>
+                        <option value="Pundi">Pundi</option>
+                        <option value="Lainnya">Lainnya (Sebutkan)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Keterangan / Sumber</label>
+                    <input type="text" id="keterangan" required placeholder="Contoh: Infaq Anggota / Listrik Kantor" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Nominal (Rp)</label>
+                    <input type="number" id="nominal" required min="1000" placeholder="Contoh: 150000" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Tanggal</label>
+                    <input type="date" id="tanggal" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-100">
+                    <button type="button" onclick="toggleModal(false)" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium shadow">Simpan ke Sheets</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT GAF & APP LOGIC -->
+    <script>
+        // URL Google Apps Script Anda
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxaYUA4JbQuXLn2ZXwgdHypTJVc_IlukTd8kmq5SV1G9XPP__11au4ZGMja96IDz-rq/exec";
+
+        let transactions = [];
+        let isSidebarPinned = false;
+        let cashCurveChartInstance = null;
+        let incomePieChartInstance = null;
+
+        // Inisialisasi Tanggal Hari Ini
+        document.getElementById('tanggal').valueAsDate = new Date();
+
+        // Toggle & Pin Sidebar Logic
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const pinBtn = document.getElementById('pinBtn');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        pinBtn.addEventListener('click', () => {
+            isSidebarPinned = !isSidebarPinned;
+            pinBtn.classList.toggle('text-emerald-400', isSidebarPinned);
+            pinBtn.title = isSidebarPinned ? "Sidebar Tersemat (Pinned)" : "Pin Sidebar";
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!isSidebarPinned && window.innerWidth < 768) {
+                if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.getElementById('tab-dashboard').classList.add('hidden');
+            document.getElementById('tab-log').classList.add('hidden');
+            document.getElementById('tab-analisa').classList.add('hidden');
+
+            document.getElementById('nav-dashboard').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition";
+            document.getElementById('nav-log').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition";
+            document.getElementById('nav-analisa').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition";
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabId}`).className = "flex items-center space-x-3 py-3 px-4 rounded-xl bg-emerald-600 text-white font-medium transition shadow-sm";
+
+            const titles = { 'dashboard': 'Dashboard Keuangan', 'log': 'Log Transaksi Kas', 'analisa': 'Analisa Ekonomi Keuangan' };
+            document.getElementById('pageTitle').innerText = titles[tabId];
+
+            if(tabId === 'dashboard' || tabId === 'analisa') {
+                updateDashboard();
+            }
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('transactionModal');
+            if(show) { modal.classList.remove('hidden'); } else { modal.classList.add('hidden'); }
+        }
+
+        function handleJenisChange() {
+            const jenis = document.getElementById('jenis').value;
+            const kategoriContainer = document.getElementById('kategoriContainer');
+            if(jenis === 'Pengeluaran') {
+                kategoriContainer.innerHTML = `
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Kategori Pengeluaran</label>
+                    <select id="kategori" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="Operasional">Operasional Kantor</option>
+                        <option value="Konsumsi">Konsumsi & Rapat</option>
+                        <option value="Sosial">Bantuan Sosial / Kegiatan</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                `;
+            } else {
+                kategoriContainer.innerHTML = `
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Kategori Pemasukan</label>
+                    <select id="kategori" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="Infaq">Infaq</option>
+                        <option value="Pundi">Pundi</option>
+                        <option value="Lainnya">Lainnya (Sebutkan)</option>
+                    </select>
+                `;
+            }
+        }
+
+        function showLoading(show) {
+            const loader = document.getElementById('loadingOverlay');
+            if(show) loader.classList.remove('hidden');
+            else loader.classList.add('hidden');
+        }
+
+        // AMBIL DATA DARI GOOGLE SHEETS
+        async function loadTransactions() {
+            showLoading(true);
+            try {
+                let response = await fetch(WEB_APP_URL);
+                let result = await response.json();
+                if(result.status === "success") {
+                    transactions = result.data.map(item => ({
+                        id: String(item.id),
+                        tanggal: item.tanggal ? String(item.tanggal).split('T')[0] : '',
+                        keterangan: item.keterangan,
+                        kategori: item.kategori,
+                        jenis: item.jenis,
+                        nominal: parseFloat(item.nominal) || 0
+                    }));
+                    updateDashboard();
+                }
+            } catch (error) {
+                console.error("Gagal mengambil data dari Google Sheets:", error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // TAMBAH TRANSAKSI KE GOOGLE SHEETS
+        async function addTransaction(e) {
+            e.preventDefault();
+            const newTx = {
+                id: Date.now(),
+                tanggal: document.getElementById('tanggal').value,
+                keterangan: document.getElementById('keterangan').value,
+                kategori: document.getElementById('kategori').value,
+                jenis: document.getElementById('jenis').value,
+                nominal: parseFloat(document.getElementById('nominal').value)
+            };
+
+            toggleModal(false);
+            showLoading(true);
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "add", data: newTx })
+                });
+
+                alert('Data berhasil disimpan ke Google Sheets!');
+                document.getElementById('transactionForm').reset();
+                document.getElementById('tanggal').valueAsDate = new Date();
+                setTimeout(loadTransactions, 2000); // Refresh data setelah 2 detik
+            } catch (error) {
+                console.error("Gagal menyimpan:", error);
+                alert("Terjadi kesalahan saat menyimpan ke database.");
+                showLoading(false);
+            }
+        }
+
+        // HAPUS TRANSAKSI DARI GOOGLE SHEETS
+        async function deleteTransaction(id) {
+            if(confirm('Apakah Anda yakin ingin menghapus transaksi ini dari Google Sheets?')) {
+                showLoading(true);
+                try {
+                    await fetch(WEB_APP_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
+                        body: JSON.stringify({ action: "delete", id: id })
+                    });
+
+                    alert('Data berhasil dihapus dari database!');
+                    setTimeout(loadTransactions, 2000);
+                } catch (error) {
+                    console.error("Gagal menghapus:", error);
+                    showLoading(false);
+                }
+            }
+        }
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        }
+
+        function filterData() {
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            const selectedMonth = document.getElementById('filterBulan').value;
+
+            let filteredTx = transactions;
+            if(selectedMonth !== 'all') {
+                filteredTx = transactions.filter(t => t.tanggal && t.tanggal.split('-')[1] === selectedMonth);
+            }
+
+            let totalMasuk = filteredTx.filter(t => t.jenis === 'Pemasukan').reduce((sum, t) => sum + t.nominal, 0);
+            let totalKeluar = filteredTx.filter(t => t.jenis === 'Pengeluaran').reduce((sum, t) => sum + t.nominal, 0);
+            
+            let globalMasuk = transactions.filter(t => t.jenis === 'Pemasukan').reduce((sum, t) => sum + t.nominal, 0);
+            let globalKeluar = transactions.filter(t => t.jenis === 'Pengeluaran').reduce((sum, t) => sum + t.nominal, 0);
+            let totalKas = globalMasuk - globalKeluar;
+
+            document.getElementById('cardTotalKas').innerText = formatRupiah(totalKas);
+            document.getElementById('cardTotalMasuk').innerText = formatRupiah(totalMasuk);
+            document.getElementById('cardTotalKeluar').innerText = formatRupiah(totalKeluar);
+
+            const bulanNama = {
+                'all': 'Semua Periode', '01': 'Januari', '02': 'Februari', '03': 'Maret', 
+                '04': 'April', '05': 'Mei', '06': 'Juni', '07': 'Juli', 
+                '08': 'Agustus', '09': 'September', '10': 'Oktober', '11': 'November', '12': 'Desember'
+            };
+            document.getElementById('labelFilterMasuk').innerText = `Periode: ${bulanNama[selectedMonth]}`;
+            document.getElementById('labelFilterKeluar').innerText = `Periode: ${bulanNama[selectedMonth]}`;
+
+            // Update Log Table
+            const tbody = document.getElementById('logTableBody');
+            tbody.innerHTML = '';
+            if(filteredTx.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">Belum ada data transaksi tercatat.</td></tr>`;
+            } else {
+                filteredTx.forEach(t => {
+                    const badgeColor = t.jenis === 'Pemasukan' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-6 text-slate-600">${t.tanggal}</td>
+                            <td class="py-3 px-6 font-medium text-slate-800">${t.keterangan}</td>
+                            <td class="py-3 px-6 text-slate-600"><span class="bg-slate-100 px-2 py-1 rounded text-xs">${t.kategori}</span></td>
+                            <td class="py-3 px-6"><span class="${badgeColor} px-2.5 py-1 rounded-full text-xs font-semibold">${t.jenis}</span></td>
+                            <td class="py-3 px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-emerald-600' : 'text-rose-600'}">${formatRupiah(t.nominal)}</td>
+                            <td class="py-3 px-6 text-center">
+                                <button onclick="deleteTransaction('${t.id}')" class="text-slate-400 hover:text-rose-600 transition"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            updateCharts();
+            updateAnalisisEkonomi(globalMasuk, globalKeluar, totalMasuk, totalKeluar);
+        }
+
+        function updateCharts() {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            let monthlyIn = Array(12).fill(0);
+            let monthlyOut = Array(12).fill(0);
+            let incomeCategories = { 'Infaq': 0, 'Pundi': 0, 'Lainnya': 0 };
+
+            transactions.forEach(t => {
+                if(t.tanggal) {
+                    const monthIndex = parseInt(t.tanggal.split('-')[1]) - 1;
+                    if(monthIndex >= 0 && monthIndex < 12) {
+                        if(t.jenis === 'Pemasukan') {
+                            monthlyIn[monthIndex] += t.nominal;
+                            if(incomeCategories[t.kategori] !== undefined) {
+                                incomeCategories[t.kategori] += t.nominal;
+                            } else {
+                                incomeCategories['Lainnya'] = (incomeCategories['Lainnya'] || 0) + t.nominal;
+                            }
+                        } else {
+                            monthlyOut[monthIndex] += t.nominal;
+                        }
+                    }
+                }
+            });
+
+            const ctxCurve = document.getElementById('cashCurveChart').getContext('2d');
+            if(cashCurveChartInstance) cashCurveChartInstance.destroy();
+            cashCurveChartInstance = new Chart(ctxCurve, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        { label: 'Pemasukan', data: monthlyIn, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3 },
+                        { label: 'Pengeluaran', data: monthlyOut, borderColor: '#f43f5e', backgroundColor: 'rgba(244, 63, 94, 0.1)', fill: true, tension: 0.3 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            const ctxPie = document.getElementById('incomePieChart').getContext('2d');
+            if(incomePieChartInstance) incomePieChartInstance.destroy();
+            incomePieChartInstance = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(incomeCategories),
+                    datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#10b981', '#0ea5e9', '#f59e0b'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        function updateAnalisisEkonomi(gMasuk, gKeluar, tMasuk, tKeluar) {
+            let rasio = gKeluar > 0 ? ((gMasuk - gKeluar) / gMasuk * 100).toFixed(1) : 100;
+            document.getElementById('analisaSurplus').innerText = `Rasio surplus kumulatif organisasi mencapai ${rasio}%. Kondisi ini menunjukkan stabilitas keuangan lembaga.`;
+            
+            const bulletList = document.getElementById('analisaBulletList');
+            bulletList.innerHTML = `
+                <li>Total Akumulasi Pemasukan Global: <strong>${formatRupiah(gMasuk)}</strong></li>
+                <li>Total Akumulasi Pengeluaran Global: <strong>${formatRupiah(gKeluar)}</strong></li>
+                <li>Pemasukan Periode Terpilih: <strong>${formatRupiah(tMasuk)}</strong></li>
+                <li>Pengeluaran Periode Terpilih: <strong>${formatRupiah(tKeluar)}</strong></li>
+                <li>Efisiensi Anggaran: <strong>${gMasuk > 0 ? ((gKeluar/gMasuk)*100).toFixed(1) : 0}% dari total pemasukan dialokasikan untuk pengeluaran.</strong></li>
+            `;
+        }
+
+        // Muat data saat pertama kali halaman terbuka
+        document.addEventListener("DOMContentLoaded", () => {
+            loadTransactions();
+        });
+    </script>
+</body>
+</html>
