@@ -321,7 +321,7 @@
                 <div>
                     <label class="block text-xs font-semibold uppercase text-tosca-300 mb-1.5">PIN Keamanan Kirim</label>
                     <div class="relative">
-                        <input type="password" id="inputPin" required placeholder="Masukkan PIN MWCPalsel212" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400 tracking-widest" autocomplete="new-password">
+                        <input type="password" id="inputPin" required placeholder="Masukkan PIN Akses" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400 tracking-widest" autocomplete="new-password">
                         <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-tosca-300 hover:text-white transition focus:outline-none" title="Tampilkan/Sembunyikan PIN">
                             <i id="pinEyeIcon" class="fa-solid fa-eye text-sm"></i>
                         </button>
@@ -356,7 +356,7 @@
             }
         }
 
-        // Fungsi Toggle Keamanan PIN Tersembunyi
+        // Fungsi Toggle Keamanan PIN Tersembunyi (Masking)
         function togglePinVisibility() {
             const pinInput = document.getElementById('inputPin');
             const eyeIcon = document.getElementById('pinEyeIcon');
@@ -469,7 +469,7 @@
             
             const enteredPin = document.getElementById('inputPin').value;
             if (enteredPin !== REQUIRED_PIN) {
-                alert("PIN Pengiriman Salah! Gunakan PIN yang benar (MWCPalsel212).");
+                alert("PIN Pengiriman Salah! Akses ditolak.");
                 return;
             }
 
