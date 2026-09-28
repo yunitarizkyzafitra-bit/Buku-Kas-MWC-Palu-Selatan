@@ -143,7 +143,7 @@
                         </select>
                     </div>
 
-                    <button onclick="toggleModal(true)" class="bg-custom-orange hover:bg-custom-orange/90 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-custom-base/50 transition flex items-center space-x-1.5 border border-custom-orange/40">
+                    <button onclick="openAddModal()" class="bg-custom-orange hover:bg-custom-orange/90 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-custom-base/50 transition flex items-center space-x-1.5 border border-custom-orange/40">
                         <i class="fa-solid fa-plus text-[10px]"></i>
                         <span class="hidden sm:inline">Entri Kas Aman</span>
                         <span class="sm:hidden">Entri</span>
@@ -241,7 +241,7 @@
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Kategori</th>
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Jenis</th>
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold text-right">Nominal (Rp)</th>
-                                        <th class="py-3.5 px-4 sm:px-6 font-semibold text-center">Aksi</th>
+                                        <th class="py-3.5 px-4 sm:px-6 font-semibold text-center">Aksi (Edit/Hapus)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="logTableBody" class="divide-y divide-custom-dark/40 text-xs sm:text-sm"></tbody>
@@ -273,17 +273,18 @@
         </div>
     </div>
 
-    <!-- MODAL INPUT TRANSAKSI DENGAN PIN & TOGGLE AMAN -->
+    <!-- MODAL INPUT / EDIT TRANSAKSI -->
     <div id="transactionModal" class="fixed inset-0 bg-custom-base/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-custom-surface border border-custom-dark/70 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto text-white">
             <div class="bg-custom-dark border-b border-custom-dark/60 px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
                     <i class="fa-solid fa-shield-halved text-custom-cream text-sm"></i>
-                    <h3 class="font-bold text-white text-base">Form Entri Kas Ber-PIN</h3>
+                    <h3 id="modalTitle" class="font-bold text-white text-base">Form Entri Kas Ber-PIN</h3>
                 </div>
                 <button onclick="toggleModal(false)" class="text-custom-cream hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form id="transactionForm" onsubmit="addTransaction(event)" class="p-6 space-y-4">
+            <form id="transactionForm" onsubmit="saveTransaction(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editId">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Jenis Transaksi</label>
                     <select id="jenis" onchange="handleJenisChange()" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
@@ -312,9 +313,8 @@
                     <input type="date" id="tanggal" required class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                 </div>
                 
-                <!-- INPUT PIN TERSEMBUNYI DENGAN TOGGLE ICON MATA -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">PIN Keamanan Kirim</label>
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">PIN Keamanan Otorisasi</label>
                     <div class="relative">
                         <input type="password" id="inputPin" required placeholder="Masukkan PIN Akses" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan tracking-widest" autocomplete="new-password">
                         <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-custom-cream hover:text-white transition focus:outline-none" title="Tampilkan/Sembunyikan PIN">
@@ -325,7 +325,7 @@
 
                 <div class="flex justify-end space-x-3 pt-4 border-t border-custom-dark/60">
                     <button type="button" onclick="toggleModal(false)" class="px-5 py-2.5 bg-custom-base text-custom-cream border border-custom-dark/50 rounded-xl text-sm font-semibold hover:bg-custom-dark">Batal</button>
-                    <button type="submit" class="px-5 py-2.5 bg-custom-orange hover:bg-custom-orange/90 text-white border border-custom-orange/40 rounded-xl text-sm font-semibold shadow-lg">Kirim ke Sheets</button>
+                    <button type="submit" class="px-5 py-2.5 bg-custom-orange hover:bg-custom-orange/90 text-white border border-custom-orange/40 rounded-xl text-sm font-semibold shadow-lg">Simpan ke Sheets</button>
                 </div>
             </form>
         </div>
@@ -333,7 +333,7 @@
 
     <!-- JAVASCRIPT SYSTEM -->
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbykl_lqiiU_7WnMMl7mf9_SYg2Jow7-kWcHoLQzYJi7h8D8Jtna1t6vRMl0kOdciL4/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyOjDOhHZw3Z1SgPPBZKSV6lSctjY7CUFn-oVlLvLS1LBWwBdUGaP7Ofb7CMEa71Y3y/exec";
         const REQUIRED_PIN = "MWCPalsel212";
 
         let transactions = [];
@@ -351,7 +351,6 @@
             }
         }
 
-        // Fungsi Toggle Keamanan PIN Tersembunyi (Masking)
         function togglePinVisibility() {
             const pinInput = document.getElementById('inputPin');
             const eyeIcon = document.getElementById('pinEyeIcon');
@@ -363,15 +362,6 @@
                 pinInput.type = "password";
                 eyeIcon.classList.remove("fa-eye-slash");
                 eyeIcon.classList.add("fa-eye");
-            }
-        }
-
-        function confirmAndDelete(id) {
-            const secretInput = prompt("Masukkan PIN Keamanan untuk Menghapus Data:");
-            if (secretInput === REQUIRED_PIN) {
-                executeDelete(id);
-            } else if (secretInput !== null) {
-                alert("PIN Salah! Akses hapus ditolak.");
             }
         }
 
@@ -399,14 +389,42 @@
 
         function toggleModal(show) {
             const modal = document.getElementById('transactionModal');
-            if(show) { 
-                document.getElementById('inputPin').value = '';
-                document.getElementById('inputPin').type = "password";
-                document.getElementById('pinEyeIcon').className = "fa-solid fa-eye text-sm";
-                modal.classList.remove('hidden'); 
-            } else { 
-                modal.classList.add('hidden'); 
+            if(show) { modal.classList.remove('hidden'); } 
+            else { modal.classList.add('hidden'); }
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = "Form Entri Kas Ber-PIN";
+            document.getElementById('editId').value = "";
+            document.getElementById('transactionForm').reset();
+            document.getElementById('tanggal').valueAsDate = new Date();
+            handleJenisChange();
+            document.getElementById('inputPin').value = '';
+            document.getElementById('inputPin').type = "password";
+            document.getElementById('pinEyeIcon').className = "fa-solid fa-eye text-sm";
+            toggleModal(true);
+        }
+
+        function openEditModal(id) {
+            const tx = transactions.find(t => t.id === String(id));
+            if(!tx) {
+                alert("Data transaksi tidak ditemukan.");
+                return;
             }
+
+            document.getElementById('modalTitle').innerText = "Form Edit Transaksi Kas";
+            document.getElementById('editId').value = tx.id;
+            document.getElementById('jenis').value = tx.jenis;
+            handleJenisChange();
+            document.getElementById('kategori').value = tx.kategori;
+            document.getElementById('keterangan').value = tx.keterangan;
+            document.getElementById('nominal').value = tx.nominal;
+            document.getElementById('tanggal').value = tx.tanggal;
+            
+            document.getElementById('inputPin').value = '';
+            document.getElementById('inputPin').type = "password";
+            document.getElementById('pinEyeIcon').className = "fa-solid fa-eye text-sm";
+            toggleModal(true);
         }
 
         function handleJenisChange() {
@@ -459,17 +477,20 @@
             finally { showLoading(false); }
         }
 
-        async function addTransaction(e) {
+        async function saveTransaction(e) {
             e.preventDefault();
             
             const enteredPin = document.getElementById('inputPin').value;
             if (enteredPin !== REQUIRED_PIN) {
-                alert("PIN Pengiriman Salah! Akses ditolak.");
+                alert("PIN Otorisasi Salah! Akses ditolak.");
                 return;
             }
 
-            const newTx = {
-                id: Date.now(),
+            const editId = document.getElementById('editId').value;
+            const actionType = editId ? "edit" : "add";
+
+            const txData = {
+                id: editId ? editId : String(Date.now()),
                 tanggal: document.getElementById('tanggal').value,
                 keterangan: document.getElementById('keterangan').value,
                 kategori: document.getElementById('kategori').value,
@@ -484,14 +505,23 @@
                 await fetch(WEB_APP_URL, {
                     method: "POST", mode: "no-cors",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ action: "add", data: newTx })
+                    body: JSON.stringify({ action: actionType, data: txData })
                 });
-                alert('Data berhasil dikirim dan disinkronkan ke Google Sheets!');
+                alert(editId ? 'Data berhasil diperbarui di Google Sheets!' : 'Data berhasil ditambahkan ke Google Sheets!');
                 document.getElementById('transactionForm').reset();
                 setTimeout(loadTransactions, 2500);
             } catch (error) { 
                 showLoading(false);
                 alert('Terjadi kesalahan jaringan saat mengirim data.');
+            }
+        }
+
+        function confirmAndDelete(id) {
+            const secretInput = prompt("Masukkan PIN Keamanan untuk Menghapus Data:");
+            if (secretInput === REQUIRED_PIN) {
+                executeDelete(id);
+            } else if (secretInput !== null) {
+                alert("PIN Salah! Akses hapus ditolak.");
             }
         }
 
@@ -545,7 +575,10 @@
                             <td class="py-3.5 px-4 sm:px-6 text-custom-cream"><span class="bg-custom-base px-2 py-0.5 rounded-md border border-custom-dark/50 text-[11px]">${t.kategori}</span></td>
                             <td class="py-3.5 px-4 sm:px-6"><span class="${badgeColor} px-2.5 py-0.5 rounded-full text-[11px] font-bold">${t.jenis}</span></td>
                             <td class="py-3.5 px-4 sm:px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-custom-cyan' : 'text-custom-orange'}">${formatRupiah(t.nominal)}</td>
-                            <td class="py-3.5 px-4 sm:px-6 text-center">
+                            <td class="py-3.5 px-4 sm:px-6 text-center space-x-1">
+                                <button onclick="openEditModal('${t.id}')" class="text-custom-cream hover:text-custom-cyan p-2 rounded-lg hover:bg-custom-base/50 transition" title="Edit Data">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </button>
                                 <button onclick="confirmAndDelete('${t.id}')" class="text-custom-cream hover:text-custom-orange p-2 rounded-lg hover:bg-custom-base/50 transition" title="Hapus Data">
                                     <i class="fa-solid fa-trash text-xs"></i>
                                 </button>
