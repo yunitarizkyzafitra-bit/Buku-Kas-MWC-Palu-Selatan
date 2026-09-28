@@ -20,18 +20,13 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        tosca: {
-                            50: '#E4EFE7',
-                            100: '#A3C9B8',
-                            200: '#7FAFA2',
-                            300: '#7FAFA2',
-                            400: '#5A8378',
-                            500: '#5A8378',
-                            600: '#5A8378',
-                            700: '#5A8378',
-                            800: '#46675e',
-                            900: '#354e47',
-                            950: '#233530',
+                        custom: {
+                            dark: '#007979',      /* Warna utama gelap */
+                            cyan: '#24B1B1',      /* Warna tosca terang */
+                            cream: '#FFE2AF',     /* Warna krem lembut */
+                            orange: '#E37434',    /* Warna aksen oranye */
+                            base: '#004D4D',      /* Background gelap mendalam */
+                            surface: '#003333'    /* Background komponen */
                         }
                     }
                 }
@@ -48,56 +43,56 @@
             height: 5px;
         }
         ::-webkit-scrollbar-track {
-            background: #233530;
+            background: #003333;
         }
         ::-webkit-scrollbar-thumb {
-            background: #5A8378;
+            background: #007979;
             border-radius: 4px;
         }
     </style>
 </head>
-<body class="bg-tosca-950 font-sans text-tosca-100 antialiased selection:bg-tosca-400 selection:text-tosca-950">
+<body class="bg-custom-base font-sans text-custom-cream antialiased selection:bg-custom-cyan selection:text-custom-base">
 
     <!-- LOADING OVERLAY -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-tosca-950/85 backdrop-blur-md z-50 flex items-center justify-center hidden">
-        <div class="bg-[#354e47] border border-tosca-500/40 px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-4">
-            <div class="w-6 h-6 border-2 border-tosca-300 border-t-transparent rounded-full animate-spin"></div>
-            <span class="text-xs font-semibold tracking-wide text-tosca-100">Sinkronisasi Google Sheets...</span>
+    <div id="loadingOverlay" class="fixed inset-0 bg-custom-base/90 backdrop-blur-md z-50 flex items-center justify-center hidden">
+        <div class="bg-custom-surface border border-custom-cyan/40 px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-4">
+            <div class="w-6 h-6 border-2 border-custom-cyan border-t-transparent rounded-full animate-spin"></div>
+            <span class="text-xs font-semibold tracking-wide text-custom-cream">Sinkronisasi Google Sheets...</span>
         </div>
     </div>
 
     <div class="flex h-screen overflow-hidden relative">
         
         <!-- SIDEBAR -->
-        <aside id="sidebar" class="bg-tosca-950 border-r border-tosca-800/60 text-white w-72 space-y-6 py-6 px-4 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 shadow-2xl flex flex-col justify-between">
+        <aside id="sidebar" class="bg-custom-surface border-r border-custom-dark/60 text-white w-72 space-y-6 py-6 px-4 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 shadow-2xl flex flex-col justify-between">
             <div>
                 <!-- Brand / Logo -->
-                <div class="flex items-center justify-between px-2 mb-8 pb-4 border-b border-tosca-800/60">
+                <div class="flex items-center justify-between px-2 mb-8 pb-4 border-b border-custom-dark/60">
                     <div class="flex items-center space-x-3">
-                        <div class="w-11 h-11 bg-tosca-900/60 rounded-2xl flex items-center justify-center border border-tosca-700/50 overflow-hidden flex-shrink-0 p-1 shadow-md">
+                        <div class="w-11 h-11 bg-custom-dark/60 rounded-2xl flex items-center justify-center border border-custom-cyan/50 overflow-hidden flex-shrink-0 p-1 shadow-md">
                             <img src="palsel kop.png" alt="Logo MWC Palu Selatan" class="w-full h-full object-contain">
                         </div>
                         <div>
                             <h1 class="text-xs font-extrabold tracking-wider text-white uppercase">MWC Palu Selatan</h1>
-                            <p class="text-[10px] text-tosca-200 font-semibold tracking-widest uppercase">Secure Ledger</p>
+                            <p class="text-[10px] text-custom-cream font-semibold tracking-widest uppercase">Secure Ledger</p>
                         </div>
                     </div>
-                    <button onclick="toggleMobileSidebar(false)" class="md:hidden text-tosca-200 hover:text-white p-2">
+                    <button onclick="toggleMobileSidebar(false)" class="md:hidden text-custom-cream hover:text-white p-2">
                         <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
 
                 <!-- Navigation Menu -->
                 <nav class="space-y-1.5">
-                    <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 py-3 px-4 rounded-xl bg-tosca-600 text-white font-semibold transition shadow-lg shadow-tosca-950/50 border border-tosca-500/40">
-                        <i class="fa-solid fa-chart-pie w-5 text-tosca-100"></i>
+                    <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 py-3 px-4 rounded-xl bg-custom-dark text-white font-semibold transition shadow-lg shadow-custom-base/50 border border-custom-cyan/40">
+                        <i class="fa-solid fa-chart-pie w-5 text-custom-cream"></i>
                         <span class="text-sm">Dashboard Utama</span>
                     </a>
-                    <a href="#" onclick="switchTab('log')" id="nav-log" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-tosca-200 hover:bg-tosca-900/60 hover:text-white transition font-medium border border-transparent">
+                    <a href="#" onclick="switchTab('log')" id="nav-log" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-custom-cream/80 hover:bg-custom-dark/40 hover:text-white transition font-medium border border-transparent">
                         <i class="fa-solid fa-book-bookmark w-5"></i>
                         <span class="text-sm">Log Transaksi</span>
                     </a>
-                    <a href="#" onclick="switchTab('analisa')" id="nav-analisa" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-tosca-200 hover:bg-tosca-900/60 hover:text-white transition font-medium border border-transparent">
+                    <a href="#" onclick="switchTab('analisa')" id="nav-analisa" class="flex items-center space-x-3 py-3 px-4 rounded-xl text-custom-cream/80 hover:bg-custom-dark/40 hover:text-white transition font-medium border border-transparent">
                         <i class="fa-solid fa-chart-line w-5"></i>
                         <span class="text-sm">Analisa Ekonomi</span>
                     </a>
@@ -105,50 +100,50 @@
             </div>
 
             <!-- Sidebar Footer -->
-            <div class="px-3 py-3 bg-tosca-900/40 rounded-2xl border border-tosca-800/60 text-xs text-tosca-200 space-y-1">
+            <div class="px-3 py-3 bg-custom-dark/30 rounded-2xl border border-custom-dark/60 text-xs text-custom-cream space-y-1">
                 <div class="flex items-center space-x-2 text-white font-semibold text-[11px]">
-                    <span class="w-2 h-2 rounded-full bg-tosca-300 animate-pulse"></span>
-                    <span>Sage Security Active</span>
+                    <span class="w-2 h-2 rounded-full bg-custom-cyan animate-pulse"></span>
+                    <span>Palette Theme Active</span>
                 </div>
-                <p class="text-[10px] text-tosca-200/70">&copy; 2026 MWC Palu Selatan</p>
+                <p class="text-[10px] text-custom-cream/60">&copy; 2026 MWC Palu Selatan</p>
             </div>
         </aside>
 
         <!-- MAIN CONTENT CONTAINER -->
-        <div class="flex-1 flex flex-col h-screen overflow-hidden bg-tosca-950">
+        <div class="flex-1 flex flex-col h-screen overflow-hidden bg-custom-base">
             
             <!-- TOP NAVBAR -->
-            <header class="bg-tosca-950/90 backdrop-blur-md border-b border-tosca-800/60 z-30 flex items-center justify-between px-4 sm:px-8 py-3.5 flex-shrink-0">
+            <header class="bg-custom-surface/90 backdrop-blur-md border-b border-custom-dark/60 z-30 flex items-center justify-between px-4 sm:px-8 py-3.5 flex-shrink-0">
                 <div class="flex items-center space-x-3">
-                    <button id="sidebarToggle" onclick="toggleMobileSidebar(true)" class="text-tosca-200 hover:text-white focus:outline-none p-2 rounded-lg hover:bg-tosca-900/60 transition border border-tosca-800/60">
+                    <button id="sidebarToggle" onclick="toggleMobileSidebar(true)" class="text-custom-cream hover:text-white focus:outline-none p-2 rounded-lg hover:bg-custom-dark/40 transition border border-custom-dark/60">
                         <i class="fa-solid fa-bars text-lg"></i>
                     </button>
                     <div>
                         <h2 id="pageTitle" class="text-base sm:text-lg font-bold text-white tracking-wide truncate max-w-[150px] sm:max-w-none">Dashboard Keuangan</h2>
-                        <p class="text-[10px] sm:text-xs text-tosca-200 hidden sm:block">Sistem Keamanan Terintegrasi Google Sheets</p>
+                        <p class="text-[10px] sm:text-xs text-custom-cream/80 hidden sm:block">Sistem Keamanan Terintegrasi Google Sheets</p>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <div class="flex items-center space-x-1 sm:space-x-2 bg-tosca-900/80 border border-tosca-700/50 px-2 sm:px-3 py-1.5 rounded-xl shadow-inner">
-                        <select id="filterBulan" onchange="filterData()" class="bg-transparent text-xs sm:text-sm text-tosca-100 focus:outline-none cursor-pointer">
-                            <option value="all" class="bg-tosca-950">Semua Bulan</option>
-                            <option value="01" class="bg-tosca-950">Januari</option>
-                            <option value="02" class="bg-tosca-950">Februari</option>
-                            <option value="03" class="bg-tosca-950">Maret</option>
-                            <option value="04" class="bg-tosca-950">April</option>
-                            <option value="05" class="bg-tosca-950">Mei</option>
-                            <option value="06" class="bg-tosca-950">Juni</option>
-                            <option value="07" class="bg-tosca-950">Juli</option>
-                            <option value="08" class="bg-tosca-950">Agustus</option>
-                            <option value="09" selected class="bg-tosca-950">September</option>
-                            <option value="10" class="bg-tosca-950">Oktober</option>
-                            <option value="11" class="bg-tosca-950">November</option>
-                            <option value="12" class="bg-tosca-950">Desember</option>
+                    <div class="flex items-center space-x-1 sm:space-x-2 bg-custom-surface border border-custom-dark/80 px-2 sm:px-3 py-1.5 rounded-xl shadow-inner">
+                        <select id="filterBulan" onchange="filterData()" class="bg-transparent text-xs sm:text-sm text-custom-cream focus:outline-none cursor-pointer">
+                            <option value="all" class="bg-custom-surface">Semua Bulan</option>
+                            <option value="01" class="bg-custom-surface">Januari</option>
+                            <option value="02" class="bg-custom-surface">Februari</option>
+                            <option value="03" class="bg-custom-surface">Maret</option>
+                            <option value="04" class="bg-custom-surface">April</option>
+                            <option value="05" class="bg-custom-surface">Mei</option>
+                            <option value="06" class="bg-custom-surface">Juni</option>
+                            <option value="07" class="bg-custom-surface">Juli</option>
+                            <option value="08" class="bg-custom-surface">Agustus</option>
+                            <option value="09" selected class="bg-custom-surface">September</option>
+                            <option value="10" class="bg-custom-surface">Oktober</option>
+                            <option value="11" class="bg-custom-surface">November</option>
+                            <option value="12" class="bg-custom-surface">Desember</option>
                         </select>
                     </div>
 
-                    <button onclick="toggleModal(true)" class="bg-tosca-600 hover:bg-tosca-500 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-tosca-950/50 transition flex items-center space-x-1.5 border border-tosca-400/30">
+                    <button onclick="toggleModal(true)" class="bg-custom-orange hover:bg-custom-orange/90 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-custom-base/50 transition flex items-center space-x-1.5 border border-custom-orange/40">
                         <i class="fa-solid fa-plus text-[10px]"></i>
                         <span class="hidden sm:inline">Entri Kas Aman</span>
                         <span class="sm:hidden">Entri</span>
@@ -162,40 +157,40 @@
                 <!-- TAB 1: DASHBOARD -->
                 <div id="tab-dashboard" class="space-y-6 sm:space-y-8">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                        <div class="bg-tosca-900/50 border border-tosca-700/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
+                        <div class="bg-custom-surface border border-custom-dark/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[11px] font-semibold tracking-wider text-tosca-200 uppercase">Total Saldo Kas</p>
+                                    <p class="text-[11px] font-semibold tracking-wider text-custom-cyan uppercase">Total Saldo Kas</p>
                                     <h3 id="cardTotalKas" class="text-2xl sm:text-3xl font-extrabold text-white mt-1.5">Rp 0</h3>
-                                    <span class="inline-block mt-2.5 text-[10px] text-tosca-950 font-bold bg-tosca-100 px-2 py-0.5 rounded-md">Likuiditas Aman</span>
+                                    <span class="inline-block mt-2.5 text-[10px] text-custom-base font-bold bg-custom-cream px-2 py-0.5 rounded-md">Likuiditas Aman</span>
                                 </div>
-                                <div class="bg-tosca-800/50 border border-tosca-600/30 text-tosca-100 p-3.5 rounded-2xl text-lg shadow-inner">
+                                <div class="bg-custom-dark/40 border border-custom-cyan/30 text-custom-cyan p-3.5 rounded-2xl text-lg shadow-inner">
                                     <i class="fa-solid fa-vault"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-tosca-900/50 border border-tosca-700/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
+                        <div class="bg-custom-surface border border-custom-dark/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[11px] font-semibold tracking-wider text-tosca-200 uppercase">Total Pemasukan</p>
-                                    <h3 id="cardTotalMasuk" class="text-2xl sm:text-3xl font-extrabold text-tosca-100 mt-1.5">Rp 0</h3>
-                                    <span class="inline-block mt-2.5 text-[10px] text-tosca-200/70">Periode Terpilih</span>
+                                    <p class="text-[11px] font-semibold tracking-wider text-custom-cyan uppercase">Total Pemasukan</p>
+                                    <h3 id="cardTotalMasuk" class="text-2xl sm:text-3xl font-extrabold text-custom-cyan mt-1.5">Rp 0</h3>
+                                    <span class="inline-block mt-2.5 text-[10px] text-custom-cream/70">Periode Terpilih</span>
                                 </div>
-                                <div class="bg-tosca-800/50 border border-tosca-600/30 text-tosca-100 p-3.5 rounded-2xl text-lg shadow-inner">
+                                <div class="bg-custom-dark/40 border border-custom-cyan/30 text-custom-cyan p-3.5 rounded-2xl text-lg shadow-inner">
                                     <i class="fa-solid fa-arrow-trend-up"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-tosca-900/50 border border-tosca-700/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
+                        <div class="bg-custom-surface border border-custom-dark/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[11px] font-semibold tracking-wider text-rose-300 uppercase">Total Pengeluaran</p>
-                                    <h3 id="cardTotalKeluar" class="text-2xl sm:text-3xl font-extrabold text-rose-300 mt-1.5">Rp 0</h3>
-                                    <span class="inline-block mt-2.5 text-[10px] text-tosca-200/70">Periode Terpilih</span>
+                                    <p class="text-[11px] font-semibold tracking-wider text-custom-orange uppercase">Total Pengeluaran</p>
+                                    <h3 id="cardTotalKeluar" class="text-2xl sm:text-3xl font-extrabold text-custom-orange mt-1.5">Rp 0</h3>
+                                    <span class="inline-block mt-2.5 text-[10px] text-custom-cream/70">Periode Terpilih</span>
                                 </div>
-                                <div class="bg-rose-950/40 border border-rose-800/40 text-rose-300 p-3.5 rounded-2xl text-lg shadow-inner">
+                                <div class="bg-custom-orange/20 border border-custom-orange/40 text-custom-orange p-3.5 rounded-2xl text-lg shadow-inner">
                                     <i class="fa-solid fa-arrow-trend-down"></i>
                                 </div>
                             </div>
@@ -203,9 +198,9 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                        <div class="bg-tosca-900/50 border border-tosca-700/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
+                        <div class="bg-custom-surface border border-custom-dark/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
                             <h3 class="font-bold text-white text-sm sm:text-base mb-4 flex items-center space-x-2">
-                                <i class="fa-solid fa-chart-line text-tosca-200"></i>
+                                <i class="fa-solid fa-chart-line text-custom-cyan"></i>
                                 <span>Kurva Arus Kas Bulanan</span>
                             </h3>
                             <div class="relative h-64 sm:h-72">
@@ -213,9 +208,9 @@
                             </div>
                         </div>
 
-                        <div class="bg-tosca-900/50 border border-tosca-700/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
+                        <div class="bg-custom-surface border border-custom-dark/40 p-5 sm:p-6 rounded-3xl shadow-xl backdrop-blur-sm">
                             <h3 class="font-bold text-white text-sm sm:text-base mb-4 flex items-center space-x-2">
-                                <i class="fa-solid fa-chart-pie text-tosca-200"></i>
+                                <i class="fa-solid fa-chart-pie text-custom-cyan"></i>
                                 <span>Komposisi Sumber Pemasukan</span>
                             </h3>
                             <div class="relative h-64 sm:h-72 flex justify-center">
@@ -227,20 +222,20 @@
 
                 <!-- TAB 2: LOG TRANSAKSI -->
                 <div id="tab-log" class="hidden space-y-6">
-                    <div class="bg-tosca-900/50 border border-tosca-700/40 rounded-3xl shadow-xl overflow-hidden backdrop-blur-sm">
-                        <div class="p-5 sm:p-6 border-b border-tosca-800/60 flex justify-between items-center">
+                    <div class="bg-custom-surface border border-custom-dark/40 rounded-3xl shadow-xl overflow-hidden backdrop-blur-sm">
+                        <div class="p-5 sm:p-6 border-b border-custom-dark/60 flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-white text-sm sm:text-base">Log Transaksi Kas Terenkripsi</h3>
-                                <p class="text-[11px] text-tosca-200 mt-0.5">Google Sheets Cloud Database</p>
+                                <p class="text-[11px] text-custom-cream/80 mt-0.5">Google Sheets Cloud Database</p>
                             </div>
-                            <button onclick="loadTransactions()" class="text-xs bg-tosca-950 hover:bg-tosca-900 text-tosca-100 px-3 py-2 rounded-xl border border-tosca-700/50 transition">
-                                <i class="fa-solid fa-rotate-right text-tosca-200"></i>
+                            <button onclick="loadTransactions()" class="text-xs bg-custom-base hover:bg-custom-dark text-custom-cream px-3 py-2 rounded-xl border border-custom-dark/50 transition">
+                                <i class="fa-solid fa-rotate-right text-custom-cyan"></i>
                             </button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse whitespace-nowrap sm:whitespace-normal">
                                 <thead>
-                                    <tr class="bg-tosca-950/80 text-tosca-200 uppercase text-[10px] sm:text-[11px] tracking-wider border-b border-tosca-800/60">
+                                    <tr class="bg-custom-base/80 text-custom-cyan uppercase text-[10px] sm:text-[11px] tracking-wider border-b border-custom-dark/60">
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Tanggal</th>
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Keterangan</th>
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold">Kategori</th>
@@ -249,7 +244,7 @@
                                         <th class="py-3.5 px-4 sm:px-6 font-semibold text-center">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="logTableBody" class="divide-y divide-tosca-800/40 text-xs sm:text-sm"></tbody>
+                                <tbody id="logTableBody" class="divide-y divide-custom-dark/40 text-xs sm:text-sm"></tbody>
                             </table>
                         </div>
                     </div>
@@ -257,19 +252,19 @@
 
                 <!-- TAB 3: ANALISA EKONOMI -->
                 <div id="tab-analisa" class="hidden space-y-6">
-                    <div class="bg-tosca-900/50 border border-tosca-700/40 p-6 sm:p-8 rounded-3xl shadow-xl space-y-6 backdrop-blur-sm">
+                    <div class="bg-custom-surface border border-custom-dark/40 p-6 sm:p-8 rounded-3xl shadow-xl space-y-6 backdrop-blur-sm">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-tosca-700/30 border border-tosca-600/40 text-tosca-200 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
+                            <div class="w-12 h-12 bg-custom-dark/30 border border-custom-cyan/40 text-custom-cyan rounded-2xl flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
                                 <i class="fa-solid fa-brain"></i>
                             </div>
                             <div>
                                 <h3 class="font-bold text-white text-base sm:text-lg">Analisis Ekonomi & Kesehatan Finansial</h3>
-                                <p class="text-xs text-tosca-200">Tinjauan makro-organisasi MWC Palu Selatan</p>
+                                <p class="text-xs text-custom-cream/80">Tinjauan makro-organisasi MWC Palu Selatan</p>
                             </div>
                         </div>
-                        <div class="p-5 bg-tosca-950/80 rounded-2xl border border-tosca-800/60 space-y-2 shadow-inner">
-                            <h4 class="font-bold text-tosca-200 text-sm">Rasio Surplus Operasional</h4>
-                            <p id="analisaSurplus" class="text-xs text-tosca-100 leading-relaxed">Menghitung rasio surplus dana kas terhadap pengeluaran rutin organisasi.</p>
+                        <div class="p-5 bg-custom-base/80 rounded-2xl border border-custom-dark/60 space-y-2 shadow-inner">
+                            <h4 class="font-bold text-custom-cyan text-sm">Rasio Surplus Operasional</h4>
+                            <p id="analisaSurplus" class="text-xs text-custom-cream leading-relaxed">Menghitung rasio surplus dana kas terhadap pengeluaran rutin organisasi.</p>
                         </div>
                     </div>
                 </div>
@@ -279,58 +274,58 @@
     </div>
 
     <!-- MODAL INPUT TRANSAKSI DENGAN PIN & TOGGLE AMAN -->
-    <div id="transactionModal" class="fixed inset-0 bg-tosca-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-tosca-950 border border-tosca-700/50 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto text-white">
-            <div class="bg-[#354e47] border-b border-tosca-800/60 px-6 py-4 flex justify-between items-center">
+    <div id="transactionModal" class="fixed inset-0 bg-custom-base/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-custom-surface border border-custom-dark/70 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto text-white">
+            <div class="bg-custom-dark border-b border-custom-dark/60 px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-shield-halved text-tosca-200 text-sm"></i>
+                    <i class="fa-solid fa-shield-halved text-custom-cream text-sm"></i>
                     <h3 class="font-bold text-white text-base">Form Entri Kas Ber-PIN</h3>
                 </div>
-                <button onclick="toggleModal(false)" class="text-tosca-200 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="toggleModal(false)" class="text-custom-cream hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="transactionForm" onsubmit="addTransaction(event)" class="p-6 space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Jenis Transaksi</label>
-                    <select id="jenis" onchange="handleJenisChange()" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Jenis Transaksi</label>
+                    <select id="jenis" onchange="handleJenisChange()" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                         <option value="Pemasukan">Pemasukan</option>
                         <option value="Pengeluaran">Pengeluaran</option>
                     </select>
                 </div>
                 <div id="kategoriContainer">
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Kategori Pemasukan</label>
-                    <select id="kategori" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Kategori Pemasukan</label>
+                    <select id="kategori" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                         <option value="Infaq">Infaq</option>
                         <option value="Pundi">Pundi</option>
                         <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Keterangan / Sumber</label>
-                    <input type="text" id="keterangan" required placeholder="Contoh: Infaq Anggota" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Keterangan / Sumber</label>
+                    <input type="text" id="keterangan" required placeholder="Contoh: Infaq Anggota" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Nominal (Rp)</label>
-                    <input type="number" id="nominal" required min="1000" placeholder="Contoh: 150000" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Nominal (Rp)</label>
+                    <input type="number" id="nominal" required min="1000" placeholder="Contoh: 150000" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Tanggal</label>
-                    <input type="date" id="tanggal" required class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Tanggal</label>
+                    <input type="date" id="tanggal" required class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                 </div>
                 
                 <!-- INPUT PIN TERSEMBUNYI DENGAN TOGGLE ICON MATA -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">PIN Keamanan Kirim</label>
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">PIN Keamanan Kirim</label>
                     <div class="relative">
-                        <input type="password" id="inputPin" required placeholder="Masukkan PIN Akses" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400 tracking-widest" autocomplete="new-password">
-                        <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-tosca-200 hover:text-white transition focus:outline-none" title="Tampilkan/Sembunyikan PIN">
+                        <input type="password" id="inputPin" required placeholder="Masukkan PIN Akses" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan tracking-widest" autocomplete="new-password">
+                        <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-custom-cream hover:text-white transition focus:outline-none" title="Tampilkan/Sembunyikan PIN">
                             <i id="pinEyeIcon" class="fa-solid fa-eye text-sm"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-4 border-t border-tosca-800/60">
-                    <button type="button" onclick="toggleModal(false)" class="px-5 py-2.5 bg-tosca-900 text-tosca-100 border border-tosca-700/50 rounded-xl text-sm font-semibold hover:bg-tosca-800">Batal</button>
-                    <button type="submit" class="px-5 py-2.5 bg-tosca-600 hover:bg-tosca-500 text-white border border-tosca-400/40 rounded-xl text-sm font-semibold shadow-lg">Kirim ke Sheets</button>
+                <div class="flex justify-end space-x-3 pt-4 border-t border-custom-dark/60">
+                    <button type="button" onclick="toggleModal(false)" class="px-5 py-2.5 bg-custom-base text-custom-cream border border-custom-dark/50 rounded-xl text-sm font-semibold hover:bg-custom-dark">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-custom-orange hover:bg-custom-orange/90 text-white border border-custom-orange/40 rounded-xl text-sm font-semibold shadow-lg">Kirim ke Sheets</button>
                 </div>
             </form>
         </div>
@@ -338,7 +333,7 @@
 
     <!-- JAVASCRIPT SYSTEM -->
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyOjDOhHZw3Z1SgPPBZKSV6lSctjY7CUFn-oVlLvLS1LBWwBdUGaP7Ofb7CMEa71Y3y/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbykl_lqiiU_7WnMMl7mf9_SYg2Jow7-kWcHoLQzYJi7h8D8Jtna1t6vRMl0kOdciL4/exec";
         const REQUIRED_PIN = "MWCPalsel212";
 
         let transactions = [];
@@ -385,12 +380,12 @@
             document.getElementById('tab-log').classList.add('hidden');
             document.getElementById('tab-analisa').classList.add('hidden');
 
-            document.getElementById('nav-dashboard').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-tosca-200 hover:bg-tosca-900/60 hover:text-white transition font-medium border border-transparent";
-            document.getElementById('nav-log').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-tosca-200 hover:bg-tosca-900/60 hover:text-white transition font-medium border border-transparent";
-            document.getElementById('nav-analisa').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-tosca-200 hover:bg-tosca-900/60 hover:text-white transition font-medium border border-transparent";
+            document.getElementById('nav-dashboard').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-custom-cream/80 hover:bg-custom-dark/40 hover:text-white transition font-medium border border-transparent";
+            document.getElementById('nav-log').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-custom-cream/80 hover:bg-custom-dark/40 hover:text-white transition font-medium border border-transparent";
+            document.getElementById('nav-analisa').className = "flex items-center space-x-3 py-3 px-4 rounded-xl text-custom-cream/80 hover:bg-custom-dark/40 hover:text-white transition font-medium border border-transparent";
 
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabId}`).className = "flex items-center space-x-3 py-3 px-4 rounded-xl bg-tosca-600 text-white font-semibold transition shadow-lg shadow-tosca-950/50 border border-tosca-500/40";
+            document.getElementById(`nav-${tabId}`).className = "flex items-center space-x-3 py-3 px-4 rounded-xl bg-custom-dark text-white font-semibold transition shadow-lg shadow-custom-base/50 border border-custom-cyan/40";
 
             const titles = { 'dashboard': 'Dashboard Keuangan', 'log': 'Log Transaksi Kas', 'analisa': 'Analisa Ekonomi Keuangan' };
             document.getElementById('pageTitle').innerText = titles[tabId];
@@ -419,8 +414,8 @@
             const kategoriContainer = document.getElementById('kategoriContainer');
             if(jenis === 'Pengeluaran') {
                 kategoriContainer.innerHTML = `
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Kategori Pengeluaran</label>
-                    <select id="kategori" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Kategori Pengeluaran</label>
+                    <select id="kategori" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                         <option value="Operasional">Operasional Kantor</option>
                         <option value="Konsumsi">Konsumsi & Rapat</option>
                         <option value="Sosial">Bantuan Sosial</option>
@@ -429,8 +424,8 @@
                 `;
             } else {
                 kategoriContainer.innerHTML = `
-                    <label class="block text-xs font-semibold uppercase text-tosca-200 mb-1.5">Kategori Pemasukan</label>
-                    <select id="kategori" class="w-full bg-tosca-900 border border-tosca-700/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-tosca-400">
+                    <label class="block text-xs font-semibold uppercase text-custom-cream mb-1.5">Kategori Pemasukan</label>
+                    <select id="kategori" class="w-full bg-custom-base border border-custom-dark/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-custom-cyan">
                         <option value="Infaq">Infaq</option>
                         <option value="Pundi">Pundi</option>
                         <option value="Lainnya">Lainnya</option>
@@ -539,19 +534,19 @@
             const tbody = document.getElementById('logTableBody');
             tbody.innerHTML = '';
             if(filteredTx.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-tosca-200/60">Belum ada data transaksi tercatat.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-custom-cream/60">Belum ada data transaksi tercatat.</td></tr>`;
             } else {
                 filteredTx.forEach(t => {
-                    const badgeColor = t.jenis === 'Pemasukan' ? 'bg-tosca-700/30 text-tosca-100 border border-tosca-500/30' : 'bg-rose-950/50 text-rose-300 border border-rose-800/40';
+                    const badgeColor = t.jenis === 'Pemasukan' ? 'bg-custom-dark/30 text-custom-cyan border border-custom-cyan/30' : 'bg-custom-orange/20 text-custom-orange border border-custom-orange/40';
                     tbody.innerHTML += `
-                        <tr class="hover:bg-tosca-800/30 transition">
-                            <td class="py-3.5 px-4 sm:px-6 text-tosca-100 text-xs">${t.tanggal}</td>
+                        <tr class="hover:bg-custom-dark/20 transition">
+                            <td class="py-3.5 px-4 sm:px-6 text-custom-cream text-xs">${t.tanggal}</td>
                             <td class="py-3.5 px-4 sm:px-6 font-semibold text-white">${t.keterangan}</td>
-                            <td class="py-3.5 px-4 sm:px-6 text-tosca-100"><span class="bg-tosca-950 px-2 py-0.5 rounded-md border border-tosca-700/50 text-[11px]">${t.kategori}</span></td>
+                            <td class="py-3.5 px-4 sm:px-6 text-custom-cream"><span class="bg-custom-base px-2 py-0.5 rounded-md border border-custom-dark/50 text-[11px]">${t.kategori}</span></td>
                             <td class="py-3.5 px-4 sm:px-6"><span class="${badgeColor} px-2.5 py-0.5 rounded-full text-[11px] font-bold">${t.jenis}</span></td>
-                            <td class="py-3.5 px-4 sm:px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-tosca-100' : 'text-rose-300'}">${formatRupiah(t.nominal)}</td>
+                            <td class="py-3.5 px-4 sm:px-6 text-right font-bold ${t.jenis === 'Pemasukan' ? 'text-custom-cyan' : 'text-custom-orange'}">${formatRupiah(t.nominal)}</td>
                             <td class="py-3.5 px-4 sm:px-6 text-center">
-                                <button onclick="confirmAndDelete('${t.id}')" class="text-tosca-200 hover:text-rose-300 p-2 rounded-lg hover:bg-tosca-900/50 transition" title="Hapus Data">
+                                <button onclick="confirmAndDelete('${t.id}')" class="text-custom-cream hover:text-custom-orange p-2 rounded-lg hover:bg-custom-base/50 transition" title="Hapus Data">
                                     <i class="fa-solid fa-trash text-xs"></i>
                                 </button>
                             </td>
@@ -590,11 +585,11 @@
                 data: {
                     labels: months,
                     datasets: [
-                        { label: 'Pemasukan', data: monthlyIn, borderColor: '#7FAFA2', backgroundColor: 'rgba(127, 175, 162, 0.1)', fill: true, tension: 0.35, borderWidth: 2 },
-                        { label: 'Pengeluaran', data: monthlyOut, borderColor: '#fb7185', backgroundColor: 'rgba(251, 113, 133, 0.1)', fill: true, tension: 0.35, borderWidth: 2 }
+                        { label: 'Pemasukan', data: monthlyIn, borderColor: '#24B1B1', backgroundColor: 'rgba(36, 177, 177, 0.1)', fill: true, tension: 0.35, borderWidth: 2 },
+                        { label: 'Pengeluaran', data: monthlyOut, borderColor: '#E37434', backgroundColor: 'rgba(227, 116, 52, 0.1)', fill: true, tension: 0.35, borderWidth: 2 }
                     ]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#A3C9B8', boxWidth: 12 } } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7FAFA2', font: { size: 10 } } }, y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7FAFA2', font: { size: 10 } } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#FFE2AF', boxWidth: 12 } } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#24B1B1', font: { size: 10 } } }, y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#24B1B1', font: { size: 10 } } } } }
             });
 
             const ctxPie = document.getElementById('incomePieChart').getContext('2d');
@@ -603,9 +598,9 @@
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(incomeCategories),
-                    datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#5A8378', '#7FAFA2', '#A3C9B8'], borderWidth: 1, borderColor: '#233530' }]
+                    datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#24B1B1', '#007979', '#FFE2AF'], borderWidth: 1, borderColor: '#003333' }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#A3C9B8', boxWidth: 12 } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#FFE2AF', boxWidth: 12 } } } }
             });
         }
 
