@@ -631,7 +631,12 @@
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(incomeCategories),
-                    datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#24B1B1', '#007979', '#FFE2AF'], borderWidth: 1, borderColor: '#003333' }]
+                    datasets: [{ 
+                        data: Object.values(incomeCategories), 
+                        backgroundColor: ['#24B1B1', '#E37434', '#FFE2AF'], /* Urutan warna: Infaq (Tosca Cerah), Pundi (Oranye), Lainnya (Krem) */
+                        borderWidth: 1, 
+                        borderColor: '#003333' 
+                    }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#FFE2AF', boxWidth: 12 } } } }
             });
